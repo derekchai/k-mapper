@@ -1,0 +1,7 @@
+[package]
+name = "karnaugh-map"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Derek Chai"]
+license = "MIT"
+description = "An example package."
