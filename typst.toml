@@ -1,7 +1,13 @@
 [package]
 name = "karnaugh-map"
 version = "0.1.0"
-entrypoint = "lib.typ"
+entrypoint = "karnaugh-map.typ"
 authors = ["Derek Chai"]
 license = "MIT"
-description = "An example package."
+description = "A package to add Karnaugh maps into Typst projects."
+repository = "https://github.com/derekchai/typst-karnaugh-map"
+categories = ["visualization"]
+keywords = [
+    "karnaugh", "map", "k map", "k-map", "electronics"
+]
+exclude = ["*.pdf]
