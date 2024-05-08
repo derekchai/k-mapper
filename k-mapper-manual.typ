@@ -1,7 +1,7 @@
 // Copyright 2024 Derek Chai.
 // Use of this code is governed by a MIT license in the LICENSE.txt file.
 
-#import "karnaugh-map.typ": *
+#import "k-mapper.typ": *
 
 #let version = "0.1.0"
 
@@ -26,17 +26,17 @@
 }
 
 #show: doc => conf(
-  [`karnaugh-map` manual\ version #version],
+  [`k-mapper` manual\ version #version],
   doc,
 )
 
-= `karnaugh-map` manual
+= `k-mapper` manual
 
 #v(1em)
 
 == Introduction
 
-The `karnaugh-map` package allows for implementing Karnaugh maps, also known as K-maps, within Typst. The package allows the creation of 2-variable (2 by 2), 3-variable (2 by 4), and 4-variable (4 by 4) Karnaugh maps.
+The `k-mapper` package allows for implementing Karnaugh maps, also known as K-maps, within Typst. The package allows the creation of 2-variable (2 by 2), 3-variable (2 by 4), and 4-variable (4 by 4) Karnaugh maps.
 
 == Usage
 
@@ -123,7 +123,7 @@ To add a Karnaugh map, use the `karnaugh()` function.
 
 === Cell Numbers
 
-Cells in `karnaugh-map` are numbered top-to-bottom, left-to-right, starting at cell 0 (top-left). Note that the cell numbers do _not_ correspond to the decimal values of the Gray code state the cell represents.
+Cells in `k-mapper` are numbered top-to-bottom, left-to-right, starting at cell 0 (top-left). Note that the cell numbers do _not_ correspond to the decimal values of the Gray code state the cell represents.
 
 #grid(
   columns: (1fr, 1fr, 1fr),

@@ -1,5 +1,5 @@
 [package]
-name = "karnaugh-map"
+name = "k-mapper"
 version = "0.1.0"
 entrypoint = "karnaugh-map.typ"
 authors = ["Derek Chai"]
@@ -10,4 +10,4 @@ categories = ["visualization"]
 keywords = [
     "karnaugh", "map", "k map", "k-map", "electronics"
 ]
-exclude = ["*.pdf]
+exclude = ["*.pdf", "*.png"]
