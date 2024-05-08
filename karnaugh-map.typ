@@ -1,7 +1,9 @@
 // Copyright 2024 Derek Chai.
 // Use of this code is governed by a MIT license in the LICENSE.txt file.
 
-#let calculate_overlay_color(colors, alpha: 120) = {
+// Calculates the resultant color when multiple RGB colors with alpha are
+// overlayed atop each other.
+#let overlay_color(colors, alpha: 120) = {
   let r_sum = 0
   let g_sum = 0
   let b_sum = 0
@@ -24,17 +26,58 @@
   )
 }
 
-#let karnaugh_2_var(
-  var1: [$A$], 
-  var2: [$B$], 
-  manual_terms: ($times$, "0", "0", "0"), 
+#let guard(expression, otherwise: "") = {
+  if not expression {
+    panic(otherwise)
+  }
+}
+
+#let karnaugh(
+  variables: ([$A$], [$B$]), 
+  manual_terms: ("0", "0", "0", "0"), 
   implicants: (), 
-  cell_size: 20pt
+  cell_size: 20pt,
+  stroke: 0.5pt,
+  colors: (
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (0, 255, 255),
+    (255, 0, 255),
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (0, 255, 255),
+    (255, 0, 255)
+  )
 ) = {
-  
-  let stroke = 0.5pt
-  let cell_colors = ((), (), (), ())
-  let colors = ((255, 0, 0), (0, 255, 0), (0, 0, 255))
+  guard(variables.len() >= 2, otherwise: "Too few variables provided! There " +
+  "should be at least two variables provided.")
+
+  if variables.len() == 2 {
+    assert(manual_terms.len() == 4, 
+    message: "Invalid number of terms provided! There should be exactly four "+
+    "terms provided.")
+  } else if variables.len() == 3 {
+    assert(manual_terms.len() == 8,
+    message: "Invalid number of terms provided! There should be exactly eight "+
+    "terms provided.")
+  }
+
+  let cell_colors = ((), (), (), (), (), (), (), ())
+
+  let x_label
+  let y_label
+
+  if variables.len() == 2 {
+    x_label = variables.at(1)
+    y_label = variables.at(0)
+  } else if variables.len() == 3 {
+    x_label = variables.at(2)
+    y_label = variables.at(0) + variables.at(1)
+  }
 
   for (index, implicant) in implicants.enumerate() {
     for cell in implicant {
@@ -42,30 +85,76 @@
     }
   }
 
-  return table(
-    columns: (auto, auto, cell_size, cell_size),
-    rows: (cell_size),
-    align: center + horizon, 
-    stroke: none,
-    
-    [], [], table.cell(colspan: 2, var2), // Variable 2 label.
-    [], [], [0], [1], // Variable 2 Gray code.
-    table.hline(start: 2, stroke: stroke),
-    table.cell(rowspan: 2, var1), // Variable 1 label.
-    [0], // Variable 1 Gray code 0.
-    table.vline(start: 2, stroke: stroke),
-  
-    table.cell(fill: calculate_overlay_color(cell_colors.at(0)))[#manual_terms.at(0)],
-    table.cell(fill: calculate_overlay_color(cell_colors.at(1)))[#manual_terms.at(1)],
-    
-    table.vline(start: 2, stroke: stroke),
-    [1], // Variable 1 Gray code 1.                
-   
-    table.cell(fill: calculate_overlay_color(cell_colors.at(2)))[#manual_terms.at(2)],
-    table.cell(fill: calculate_overlay_color(cell_colors.at(3)))[#manual_terms.at(3)],
-    
-    table.hline(start: 2, stroke: stroke)
-  )
+  let y_label_row_span
+
+  if variables.len() == 2 {
+    y_label_row_span = 2
+  } else {
+    y_label_row_span = 4
+  }
+
+  let term_cells = ()
+
+  for (index, term) in manual_terms.enumerate() {
+    term_cells.push(
+      table.cell(
+        fill: overlay_color(cell_colors.at(index))
+      )[#manual_terms.at(index)]
+    )
+  }
+
+  if variables.len() == 2 {
+    return table(
+      columns: (auto, auto, cell_size, cell_size),
+      rows: (cell_size),
+      align: center + horizon, 
+      stroke: none,
+      
+      [], [], table.cell(colspan: 2, x_label), 
+      [], [], [0], [1], 
+      table.hline(start: 2, stroke: stroke),
+      table.cell(rowspan: y_label_row_span, y_label), 
+      [0],
+      table.vline(start: 2, stroke: stroke),
+      term_cells.at(0),
+      term_cells.at(1),
+      table.vline(start: 2, stroke: stroke),
+      [1],
+      term_cells.at(2),
+      term_cells.at(3),
+      table.hline(start: 2, stroke: stroke),
+    ) 
+  } else {
+    return table(
+      columns: (auto, auto, cell_size, cell_size),
+      rows: (cell_size),
+      align: center + horizon, 
+      stroke: none,
+
+      [], [], table.cell(colspan: 2, x_label), 
+      [], [], [0], [1], 
+      table.hline(start: 2, stroke: stroke),
+      table.cell(rowspan: y_label_row_span, y_label), 
+      [00],
+      table.vline(start: 2, stroke: stroke),
+      term_cells.at(0), term_cells.at(1),
+      table.vline(start: 2, stroke: stroke),
+      [01], term_cells.at(2), term_cells.at(3),
+      [11], term_cells.at(4), term_cells.at(5),
+      [10], term_cells.at(6), term_cells.at(7),
+      table.hline(start: 2, stroke: stroke)
+    )
+  }
 }
 
-#karnaugh_2_var(var1: [$Q$], manual_terms: ("1", $times.big$, "1", "0"), implicants: ((0, 1), ))
+#karnaugh(
+  variables: ($A$, $B$, $C$) , 
+  manual_terms: ("1", "1", "1", "1", "1", "0", "0", "0"), 
+  implicants: ((0,1,2,3), (2,4))
+)
+
+#karnaugh(
+  variables: ($A$, $B$) , 
+  manual_terms: ("1", "1", "1", "1"), 
+  implicants: ((0,1,2,3), (2,4))
+)
