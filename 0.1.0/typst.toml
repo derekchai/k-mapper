@@ -1,7 +1,7 @@
 [package]
 name = "k-mapper"
 version = "0.1.0"
-entrypoint = "karnaugh-map.typ"
+entrypoint = "k-mapper.typ"
 authors = ["Derek Chai"]
 license = "MIT"
 description = "A package to add Karnaugh maps into Typst projects."
