@@ -42,7 +42,7 @@ The `karnaugh-map` package allows for implementing Karnaugh maps, also known as 
 
 To add a Karnaugh map, use the `karnaugh()` function. 
 
-=== Parameters
+=== Function Parameters
 
 #table(
   columns: (auto, 2fr, auto),
@@ -150,7 +150,7 @@ Cells in `karnaugh-map` are numbered top-to-bottom, left-to-right, starting at c
 #grid(
   columns: (0.5fr, 1fr),
   inset: 10pt, 
-  
+
   karnaugh(
     variables: ($R$, $S$, $Q_(t-)$),
     manual-terms: ("0", "1", "1", "1", "0", "0", "X", "X"),
