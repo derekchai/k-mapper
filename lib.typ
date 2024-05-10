@@ -1,19 +1,56 @@
 #import "utils.typ": *
 
 #let karnaugh(
+  // 4, 8, 16
   grid-size,
+
+  // Label to go on the x-axis of the K-map.
   x-label: $$,
+
+  // Label to go on the y-axis of the K-map.
   y-label: $$,
+
+  // Gray code positions where there is a 0. Otherwise the K-map is filled with 1s.
   minterms: none,
+
+  // Gray code positions where there is a 1. Otherwise the K-map is filled with 0s
   maxterms: none,
+
+  // Terms in order of Gray code positions. 
   manual-terms: none,
+
+  // Rectangular implicants, where each element is an array of two values: two
+  // corners of the implicant, in Gray code position.
   implicants: (),
+
+  // Implicants where it wraps around the VERTICAL EDGES of the K-map. Each
+  // element is an array of two values: two corners of the implicant, in Gray
+  // code position.
   horizontal-implicants: (),
+
+  // Implicants where it wraps around the HORIZONTAL EGES of the K-map. Each
+  // element is an array of two values: two corners of the implicant, in Gray
+  // code position.
   vertical-implicants: (),
+
+  // A Boolean value indicating whether the K-map has corner implicants (those)
+  // where there is an implicant at the four corners (i.e. they wrap around)
+  // both horizontal and vertical edges.
   corner-implicants: false,
+
+  // Size of each cell in the K-map.
   cell-size: 20pt,
+
+  // Stroke size of the K-map.
   stroke-size: 0.5pt,
+
+  // The alpha value (transparency) of the colors in the K-map. A number between
+  // 0 and 255.
   alpha: 120,
+
+  // Array of colors to be used in the K-map. The first implicant uses the first
+  // color, the second the second color, etc. If there are more implicants than
+  // there are colors, they wrap around.
   colors: (
     rgb(255, 0, 0, 100),
     rgb(0, 255, 0, 100),
@@ -22,8 +59,15 @@
     rgb(255, 0, 255, 100),
     rgb(255, 255, 0, 100),
   ),
+
+  // Inset of each implicant within its cell.
   implicant-inset: 2pt,
+
+  // How much wrapping implicants (i.e. horizontal, vertical, corner) overflow
+  // from the table.
   edge-implicant-overflow: 5pt,
+
+  // Corner radius of the implicants.
   implicant-radius: 5pt
 ) = {
   assert(
@@ -335,12 +379,15 @@
     )
   }
 
-  grid(
-    columns: 3,
-    align: center + horizon,
-    [], [], x-label,
-    [], [], x-gray,
-    y-label, y-gray, body,
+  block(
+    breakable: false,
+    grid(
+      columns: 3,
+      align: center + horizon,
+      [], [], x-label,
+      [], [], x-gray,
+      y-label, y-gray, body,
+    )
   )
 }
 
@@ -372,7 +419,8 @@
   16,
   x-label: $A$, y-label: $B$,
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-  vertical-implicants: ((0, 8), (3, 10))
+  vertical-implicants: ((0, 8), (2, 11)),
+  colors: (rgb(100, 100, 100, 100), )
 )
 
 #karnaugh(
@@ -380,4 +428,3 @@
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
   corner-implicants: true
 )
-

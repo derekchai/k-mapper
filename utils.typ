@@ -23,6 +23,7 @@
   }
 }
 
+// Converts a Gray code position to its coordinate on the K-map.
 #let gray-to-coordinate(n, grid-size) = {
   assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
   message: "Please enter a grid size of 4, 8, or 16!")
@@ -51,6 +52,7 @@
   // TODO: other grid sizes.
 }
 
+// Stacks items in the z-axis.
 #let zstack(
   alignment: top + left,
   ..args
