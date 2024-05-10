@@ -2,6 +2,8 @@
 
 #let karnaugh(
   grid-size,
+  x-label: $$,
+  y-label: $$,
   minterms: none,
   maxterms: none,
   manual-terms: none,
@@ -71,7 +73,7 @@
     ..cell-terms.map(term => [#term])
   )
 
-  zstack(
+  let body = zstack(
     alignment: bottom + left,
     (base, 0pt, 0pt), 
 
@@ -293,6 +295,53 @@
       )
     } // Corner implicants.
   )
+
+  // Labels.
+  let x-gray
+  if grid-size == 16 {
+    x-gray = table(
+      columns: (cell-size,) * 4,
+      rows: cell-size,
+      align: center + bottom,
+      stroke: none,
+      [00], [01], [11], [10]
+    )
+  } else {
+    x-gray = table(
+      columns: (cell-size,) * 2,
+      rows: cell-size,
+      align: center + bottom,
+      stroke: none,
+      [0], [1]
+    ) 
+  }
+
+  let y-gray
+  if grid-size == 4 {
+    y-gray = table(
+      columns: cell-size,
+      rows: cell-size,
+      align: right + horizon,
+      stroke: none,
+      [0], [1]
+    )
+  } else {
+    y-gray = table(
+      columns: cell-size,
+      rows: cell-size,
+      align: right + horizon,
+      stroke: none,
+      [00], [01], [11], [10]
+    )
+  }
+
+  grid(
+    columns: 3,
+    align: center + horizon,
+    [], [], x-label,
+    [], [], x-gray,
+    y-label, y-gray, body,
+  )
 }
 
 #karnaugh(
@@ -321,6 +370,7 @@
 
 #karnaugh(
   16,
+  x-label: $A$, y-label: $B$,
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
   vertical-implicants: ((0, 8), (3, 10))
 )
