@@ -6,6 +6,7 @@
   maxterms: none, // TODO
   manual-terms: none,
   implicants: (),
+  edge-implicants: (),
   cell-size: 20pt,
   stroke-size: 0.5pt,
   alpha: 120,
@@ -96,6 +97,12 @@
   4,
   manual-terms: (0, 1, 2, 3),
   implicants: ((0, 1), (0, 2))
+)
+
+#karnaugh(
+  8,
+  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
+  edge-implicants: ((0, 4))
 )
 
 [ABCDEF]aaabbbcdd
