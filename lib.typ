@@ -8,6 +8,7 @@
   implicants: (),
   horizontal-implicants: (),
   vertical-implicants: (),
+  corner-implicants: false,
   cell-size: 20pt,
   stroke-size: 0.5pt,
   alpha: 120,
@@ -19,12 +20,13 @@
     rgb(255, 0, 255, 100),
     rgb(255, 255, 0, 100),
   ),
-  implicant-inset: 4pt,
+  implicant-inset: 2pt,
   edge-implicant-overflow: 5pt,
   implicant-radius: 5pt
 ) = {
   let cell-terms
   let cell-total-size = cell-size // + stroke-size
+  let implicant-count = 0
 
   if manual-terms != none {
     cell-terms = manual-terms.map(x => to-gray-code(x, grid-size)) // TODO
@@ -51,6 +53,8 @@
 
     // Implicants.
     ..for (index, implicant) in implicants.enumerate() {
+      implicant-count += 1
+
       let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
       let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
@@ -60,31 +64,33 @@
       bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       top-right-point = (calc.max(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
 
-      let dx = bottom-left-point.at(0) * cell-total-size
-      let dy = bottom-left-point.at(1) * cell-total-size
+      let dx = bottom-left-point.at(0) * cell-total-size + implicant-inset
+      let dy = bottom-left-point.at(1) * cell-total-size + implicant-inset
 
-      let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size
-      let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size
+      let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size - implicant-inset * 2
+      let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size - implicant-inset * 2
 
       // Loop back on the colors array if there are more implicants than there
       // are colors.
-      let color = colors.at(calc.rem-euclid(index, colors.len()))
+      let color = colors.at(calc.rem-euclid(implicant-count - 1, colors.len()))
 
       (
         (
           rect(
             stroke: color,
             fill: color,
-            width: width - implicant-inset,
-            height: height - implicant-inset,
+            width: width,
+            height: height,
             radius: implicant-radius
-          ), dx + (implicant-inset / 2), -dy - (implicant-inset / 2)
+          ), dx, -dy 
         ),
       )
     }, // Implicants.
 
     // Horizontal implicants.
     ..for (index, implicant) in horizontal-implicants.enumerate() {
+      implicant-count += 1
+
       let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
       let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
@@ -92,17 +98,17 @@
       let bottom-right-point = (calc.max(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       let top-right-point = (calc.max(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
 
-      let dx1 = bottom-left-point.at(0) * cell-total-size - edge-implicant-overflow
-      let dx2 = bottom-right-point.at(0) * cell-total-size
-      let dy = bottom-left-point.at(1) * cell-total-size
+      let dx1 = bottom-left-point.at(0) * cell-total-size - edge-implicant-overflow + implicant-inset
+      let dx2 = bottom-right-point.at(0) * cell-total-size + implicant-inset
+      let dy = bottom-left-point.at(1) * cell-total-size + implicant-inset
       // let dy2 = bottom-right-point.at(1) * cell-total-size
 
-      let width = cell-size + edge-implicant-overflow
-      let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size
+      let width = cell-size + edge-implicant-overflow - implicant-inset * 2
+      let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size - implicant-inset * 2
 
       // Loop back on the colors array if there are more implicants than there
       // are colors.
-      let color = colors.at(calc.rem-euclid(index, colors.len()))
+      let color = colors.at(calc.rem-euclid(implicant-count - 1, colors.len()))
 
       (
         (
@@ -113,10 +119,10 @@
               bottom: color
             ),
             fill: color,
-            width: width - implicant-inset,
-            height: height - implicant-inset,
+            width: width ,
+            height: height,
             radius: (right: implicant-radius)
-          ), dx1 + (implicant-inset / 2), -dy - (implicant-inset / 2)
+          ), dx1, -dy
         ),
         (
           rect(
@@ -126,16 +132,18 @@
               bottom: color
             ),
             fill: color,
-            width: width - implicant-inset,
-            height: height - implicant-inset,
+            width: width,
+            height: height,
             radius: (left: implicant-radius)
-          ), dx2 + (implicant-inset / 2), -dy - (implicant-inset / 2)
+          ), dx2, -dy
         )
       )
     },
     
     // Vertical implicants.
     ..for (index, implicant) in vertical-implicants.enumerate() {
+      implicant-count += 1
+
       let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
       let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
@@ -143,16 +151,16 @@
       let top-left-point = (calc.min(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
       let top-right-point = (calc.max(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
 
-      let dx = bottom-left-point.at(0) * cell-total-size
-      let dy1 = bottom-left-point.at(1) * cell-total-size - edge-implicant-overflow
-      let dy2 = top-left-point.at(1) * cell-total-size
+      let dx = bottom-left-point.at(0) * cell-total-size + implicant-inset
+      let dy1 = bottom-left-point.at(1) * cell-total-size - edge-implicant-overflow + implicant-inset
+      let dy2 = top-left-point.at(1) * cell-total-size + implicant-inset
 
-      let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size
-      let height = cell-size + edge-implicant-overflow
+      let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size - implicant-inset * 2
+      let height = cell-size + edge-implicant-overflow - implicant-inset * 2
 
       // Loop back on the colors array if there are more implicants than there
       // are colors.
-      let color = colors.at(calc.rem-euclid(index, colors.len()))
+      let color = colors.at(calc.rem-euclid(implicant-count - 1, colors.len()))
 
       (
         (
@@ -163,10 +171,10 @@
               right: color
             ),
             fill: color,
-            width: width - implicant-inset,
-            height: height - implicant-inset,
+            width: width,
+            height: height,
             radius: (top: implicant-radius)
-          ), dx + (implicant-inset / 2), -dy1 - (implicant-inset / 2)
+          ), dx, -dy1
         ),
         (
           rect(
@@ -176,15 +184,90 @@
               right: color,
             ),
             fill: color,
-            width: width - implicant-inset,
-            height: height - implicant-inset,
+            width: width,
+            height: height,
             radius: (bottom: implicant-radius)
-          ), dx + (implicant-inset / 2), -dy2 - (implicant-inset / 2)
+          ), dx, -dy2
         )
       )
-    } // Vertical implicants.
+    }, // Vertical implicants.
 
+    // Corner implicants.
+    ..if corner-implicants {
+      implicant-count += 1
 
+      // Index (below) of array is the Gray code position of that corner.
+      //
+      //    0    1
+      //
+      //    2    3
+      //
+      // For example, at index 3, in a 4x4 K-map, the Gray code at that corner
+      // is 10.
+      let grid-size-4-corners = (0, 1, 2, 3).map(x => gray-to-coordinate(x, 4))
+      let grid-size-8-corners = (0, 1, 4, 5).map(x => gray-to-coordinate(x, 8))
+      let grid-size-16-corners = (0, 2, 8, 10).map(x => gray-to-coordinate(x, 16))
+
+      let corners
+
+      if grid-size == 4 {
+        corners = grid-size-4-corners
+      } else if grid-size == 8 {
+        corners = grid-size-8-corners
+      } else {
+        corners = grid-size-16-corners
+      }
+
+      let dx-left = -edge-implicant-overflow + implicant-inset
+      let dx-right = corners.at(1).at(0) * cell-total-size + implicant-inset
+      let dy-top = corners.at(0).at(1) * cell-total-size + implicant-inset
+      let dy-bottom = edge-implicant-overflow - implicant-inset
+
+      let width = cell-size + edge-implicant-overflow - implicant-inset * 2
+
+      // Loop back on the colors array if there are more implicants than there
+      // are colors.
+      let color = colors.at(calc.rem-euclid(implicant-count - 1, colors.len()))
+
+      (
+        (
+          rect(
+            width: width, 
+            height: width, 
+            stroke: (right: color, bottom: color), 
+            fill: color,
+            radius: (bottom-right: implicant-radius)
+          ), dx-left, -dy-top
+        ),
+        (
+          rect(
+            width: width, 
+            height: width, 
+            stroke: (left: color, bottom: color), 
+            fill: color,
+            radius: (bottom-left: implicant-radius)
+          ), dx-right, -dy-top
+        ),
+        (
+          rect(
+            width: width, 
+            height: width, 
+            stroke: (top: color, right: color), 
+            fill: color,
+            radius: (top-right: implicant-radius)
+          ), dx-left, dy-bottom
+        ),
+        (
+          rect(
+            width: width, 
+            height: width, 
+            stroke: (top: color, left: color), 
+            fill: color,
+            radius: (top-left: implicant-radius)
+          ), dx-right, dy-bottom
+        )
+      )
+    } // Corner implicants.
   )
 }
 
@@ -218,4 +301,20 @@
   vertical-implicants: ((0, 8), (3, 10))
 )
 
-[ABCDEF]aaabbbcdd
+#karnaugh(
+  16,
+  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+  corner-implicants: true
+)
+
+#karnaugh(
+  4,
+  manual-terms: (0, 1, 2, 3),
+  corner-implicants: true
+)
+
+#karnaugh(
+  8,
+  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
+  corner-implicants: true
+)
