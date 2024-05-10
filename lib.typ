@@ -1,26 +1,7 @@
 #import "utils.typ": *
 
-#blend(rgb(255, 0, 0, 120), rgb(0, 255, 0, 120))
-
-#let a = rgb(255, 0, 0, 120)
-#let b = rgb(0, 255, 0, 120)
-#let c = rgb(0, 0, 255, 120)
-
-#grid(
-  columns: 2,
-  [#box(width: 30pt, height: 30pt, fill: a)], [],
-  [#box(width: 30pt, height: 30pt, fill: blend(a, b))], [#box(width: 30pt, height: 30pt, fill: b)],
-  [], [#box(width: 30pt, height: 30pt, fill: blend(c, b))],
-  [], [#box(width: 30pt, height: 30pt, fill: c)],
-  rect(
-    width: 30pt, height: 30pt,
-    fill: a,
-    stroke: rgb(255, 0, 0, 255), 
-    radius: 10pt
-  )
-)
-
-#let karnaugh-skeleton(
+#let karnaugh(
+  grid-size,
   minterms: none, // TODO
   maxterms: none, // TODO
   manual-terms: none,
@@ -42,11 +23,17 @@
   let cell-total-size = cell-size // + stroke-size
 
   if manual-terms != none {
-    cell-terms = manual-terms.map(x => to-gray-code(x, 8)) // TODO
+    cell-terms = manual-terms.map(x => to-gray-code(x, grid-size)) // TODO
   } 
 
+  let columns-dict = (
+    "4": (cell-size, cell-size),
+    "8": (cell-size, cell-size),
+    "16": (cell-size, cell-size, cell-size, cell-size),
+  )
+
   let base = table(
-    columns: (cell-size, cell-size),
+    columns: columns-dict.at(str(grid-size)),
     rows: cell-size,
     align: center + horizon,
     stroke: stroke-size,
@@ -59,8 +46,8 @@
     (base, 0pt, 0pt), 
 
     ..for (index, implicant) in implicants.enumerate() {
-      let p1 = gray-to-coordinate(implicant.at(0), 8) // TODO: different sizes
-      let p2 = gray-to-coordinate(implicant.at(1), 8)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
       let bottom-left-point
       let top-right-point
@@ -91,13 +78,24 @@
       )
     }
   )
-
-  for implicant in implicants {
-    [#gray-to-coordinate(implicant, 8)]
-  }
 }
 
-#karnaugh-skeleton(
+#karnaugh(
+  8,
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
   implicants: ((0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6))
 )
+
+#karnaugh(
+  16,
+  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+  implicants: ((0, 5), (3, 11), (5, 10), (8, 12))
+)
+
+#karnaugh(
+  4,
+  manual-terms: (0, 1, 2, 3),
+  implicants: ((0, 1), (0, 2))
+)
+
+[ABCDEF]aaabbbcdd

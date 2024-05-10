@@ -27,28 +27,22 @@
   assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
   message: "Please enter a grid size of 4, 8, or 16!")
 
-  if grid-size == 8 {
-    if n == 4 { return 6 }
-    else if n == 5 { return 7 }
-    else if n == 6 { return 4 }
-    else if n == 7 { return 5 }
-    else { return n }
-  } else if grid-size == 16 {
-    if n == 2 { return 3 }
-    else if n == 3 { return 2 }
-    else if n == 6 { return 7 }
-    else if n == 7 { return 6 }
-    else if n == 8 { return 12 }
-    else if n == 9 { return 13 }
-    else if n == 10 { return 15 }
-    else if n == 11 { return 14 }
-    else if n == 12 { return 8 }
-    else if n == 13 { return 9 }
-    else if n == 14 { return 11 }
-    else if n == 15 { return 10 }
-    else { return n }
+  let grid-size-4 = (0, 1, 2, 3)
+  let grid-size-8 = (0, 1, 2, 3, 6, 7, 4, 5)
+
+  let grid-size-16 = (
+    0,  1,  3,  2,
+    4,  5,  7,  6,
+    12, 13, 15, 14,
+    8,  9,  11, 10
+  )
+
+  if grid-size == 4 {
+    return grid-size-4.at(n)
+  } else if grid-size == 8 {
+    return grid-size-8.at(n)
   } else {
-    return n
+    return grid-size-16.at(n)
   }
 }
 
@@ -56,15 +50,26 @@
   assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
   message: "Please enter a grid size of 4, 8, or 16!")
 
-  if grid-size == 8 {
-    if n == 4 { return (0, 0) }
-    else if n == 5 { return (1, 0) }
-    else if n == 6 { return (0, 1) }
-    else if n == 7 { return (1, 1) }
-    else if n == 2 { return (0, 2) }
-    else if n == 3 { return (1, 2) }
-    else if n == 0 { return (0, 3) }
-    else if n == 1 { return (1, 3) }
+  let grid-size-4 = ((0, 1), (1,1), (0, 0), (1, 0))
+
+  let grid-size-8 = (
+    (0, 3), (1, 3), (0, 2), (1, 2),
+    (0, 0), (1, 0), (0, 1), (1, 1)
+  )
+
+  let grid-size-16 = (
+    (0, 3), (1, 3), (3, 3), (2, 3),
+    (0, 2), (1, 2), (3, 2), (2, 2),
+    (0, 0), (1, 0), (3, 0), (2, 0),
+    (0, 1), (1, 1), (3, 1), (2, 1)
+  )
+
+  if grid-size == 4 {
+    return grid-size-4.at(n)
+  } else if grid-size == 8 {
+    return grid-size-8.at(n)
+  } else {
+    return grid-size-16.at(n)
   }
   // TODO: other grid sizes.
 }
