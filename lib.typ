@@ -1,9 +1,5 @@
 #import "utils.typ": *
 
-== Test 
-
-Test
-
 #blend(rgb(255, 0, 0, 120), rgb(0, 255, 0, 120))
 
 #let a = rgb(255, 0, 0, 120)
@@ -36,7 +32,8 @@ Test
     rgb(255, 0, 0, 100),
     rgb(0, 255, 0, 100),
     rgb(0, 0, 255, 100),
-  )
+  ),
+  implicant-inset: 4pt
 ) = {
   let cell-terms
   let cell-total-size = cell-size // + stroke-size
@@ -79,10 +76,10 @@ Test
           rect(
             stroke: colors.at(index).transparentize(-100%) + stroke-size,
             fill: colors.at(index),
-            width: width,
-            height: height,
+            width: width - implicant-inset,
+            height: height - implicant-inset,
             radius: 5pt
-          ), dx, -dy
+          ), dx + (implicant-inset / 2), -dy - (implicant-inset / 2)
         ),
       )
     }
