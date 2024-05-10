@@ -32,6 +32,9 @@
     rgb(255, 0, 0, 100),
     rgb(0, 255, 0, 100),
     rgb(0, 0, 255, 100),
+    rgb(0, 255, 255, 100),
+    rgb(255, 0, 255, 100),
+    rgb(255, 255, 0, 100),
   ),
   implicant-inset: 4pt
 ) = {
@@ -71,11 +74,15 @@
       let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size
       let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size
 
+      // Loop back on the colors array if there are more implicants than there
+      // are colors.
+      let color = colors.at(calc.rem-euclid(index, colors.len()))
+
       (
         (
           rect(
-            stroke: colors.at(index).transparentize(-100%) + stroke-size,
-            fill: colors.at(index),
+            stroke: color,
+            fill: color,
             width: width - implicant-inset,
             height: height - implicant-inset,
             radius: 5pt
@@ -92,5 +99,5 @@
 
 #karnaugh-skeleton(
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
-  implicants: ((2, 6), (0, 3), (1, 5))
+  implicants: ((0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6))
 )
