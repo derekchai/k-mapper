@@ -2,8 +2,8 @@
 
 #let karnaugh(
   grid-size,
-  minterms: none, // TODO
-  maxterms: none, // TODO
+  minterms: none,
+  maxterms: none,
   manual-terms: none,
   implicants: (),
   horizontal-implicants: (),
@@ -24,13 +24,37 @@
   edge-implicant-overflow: 5pt,
   implicant-radius: 5pt
 ) = {
+  assert(
+    minterms != none and maxterms == none and manual-terms == none
+    or minterms == none and maxterms != none and manual-terms == none
+    or minterms == none and maxterms == none and manual-terms != none,
+    message: "minterms, maxterms, and manual-terms are mutually exclusive!"
+  )
+
+  if manual-terms != none {
+    assert(manual-terms.len() == grid-size,
+    message: "Please provide exactly the correct number of terms for the" +
+    "respective grid size!")
+  }
+
+  // Top-to-bottom, left-to-right terms.
   let cell-terms
-  let cell-total-size = cell-size // + stroke-size
+  let cell-total-size = cell-size
   let implicant-count = 0
 
   if manual-terms != none {
-    cell-terms = manual-terms.map(x => to-gray-code(x, grid-size)) // TODO
-  } 
+    cell-terms = manual-terms.map(x => position-to-gray(x, grid-size)) // TODO
+  } else if minterms != none {
+    cell-terms = (1, ) * grid-size
+    for minterm in minterms {
+      cell-terms.at(position-to-gray(minterm, grid-size)) = 0
+    }
+  } else {
+    cell-terms = (0, ) * grid-size
+    for maxterm in maxterms {
+      cell-terms.at(position-to-gray(maxterm, grid-size)) = 1
+    }
+  }
 
   let columns-dict = (
     "4": (cell-size, cell-size),
@@ -307,14 +331,3 @@
   corner-implicants: true
 )
 
-#karnaugh(
-  4,
-  manual-terms: (0, 1, 2, 3),
-  corner-implicants: true
-)
-
-#karnaugh(
-  8,
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
-  corner-implicants: true
-)

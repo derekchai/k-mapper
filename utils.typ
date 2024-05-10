@@ -1,6 +1,6 @@
 // Converts the zero-indexed nth position of the Karnaugh map to its Gray code
 // coordinate.
-#let to-gray-code(n, grid-size) = {
+#let position-to-gray(n, grid-size) = {
   assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
   message: "Please enter a grid size of 4, 8, or 16!")
 
