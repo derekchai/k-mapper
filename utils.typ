@@ -21,6 +21,8 @@
   return rgb(..result-color)
 }
 
+// Converts the zero-indexed nth position of the Karnaugh map to its Gray code
+// coordinate.
 #let to-gray-code(n, grid-size) = {
   assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
   message: "Please enter a grid size of 4, 8, or 16!")
@@ -43,11 +45,28 @@
     else if n == 12 { return 8 }
     else if n == 13 { return 9 }
     else if n == 14 { return 11 }
-    else if n == 15 { return 10}
+    else if n == 15 { return 10 }
     else { return n }
   } else {
     return n
   }
+}
+
+#let gray-to-coordinate(n, grid-size) = {
+  assert(grid-size == 4 or grid-size == 8 or grid-size == 16,
+  message: "Please enter a grid size of 4, 8, or 16!")
+
+  if grid-size == 8 {
+    if n == 4 { return (0, 0) }
+    else if n == 5 { return (1, 0) }
+    else if n == 6 { return (0, 1) }
+    else if n == 7 { return (1, 1) }
+    else if n == 2 { return (0, 2) }
+    else if n == 3 { return (1, 2) }
+    else if n == 0 { return (0, 3) }
+    else if n == 1 { return (1, 3) }
+  }
+  // TODO: other grid sizes.
 }
 
 #let zstack(

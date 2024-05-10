@@ -1,4 +1,4 @@
-#import "utils.typ": blend, to-gray-code, zstack
+#import "utils.typ": *
 
 == Test 
 
@@ -24,26 +24,11 @@ Test
   )
 )
 
-
-#let karnaugh-3(
-  variables: ($A$, $B$, $C$),
-  minterms: (),
-  maxterms: (),
-  manual-terms: (),
-  implicants: (),
-  cell-size: 20pt,
-  stroke-size: 20pt,
-  alpha: 120
-) = {
-  
-}
-
-
 #let karnaugh-skeleton(
   minterms: none, // TODO
   maxterms: none, // TODO
   manual-terms: none,
-  implicants: none,
+  implicants: (),
   cell-size: 20pt,
   stroke-size: 0.5pt,
   alpha: 120
@@ -52,7 +37,7 @@ Test
   let cell-total-size = cell-size + stroke-size
 
   if manual-terms != none {
-    cell-terms = manual-terms.map(x => to-gray-code(x, 8))
+    cell-terms = manual-terms.map(x => to-gray-code(x, 8)) // TODO
   } 
 
   let base = table(
@@ -65,14 +50,20 @@ Test
   )
 
   zstack(
-    alignment: top + right,
+    alignment: bottom + left,
     (base, 0pt, 0pt), 
-    ([haaa], -20pt, 0pt)
+    (square(
+      stroke: red + 0.5pt,
+      fill: rgb(255, 0, 0, 120)
+    ), 0pt, 0pt)
   )
+
+  for implicant in implicants {
+    [#gray-to-coordinate(implicant, 8)]
+  }
 }
 
 #karnaugh-skeleton(
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7)
+  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
+  implicants: (6, 3)
 )
-
-#to-gray-code(14, 16)
