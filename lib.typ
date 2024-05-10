@@ -31,10 +31,15 @@ Test
   implicants: (),
   cell-size: 20pt,
   stroke-size: 0.5pt,
-  alpha: 120
+  alpha: 120,
+  colors: (
+    rgb(255, 0, 0, 100),
+    rgb(0, 255, 0, 100),
+    rgb(0, 0, 255, 100),
+  )
 ) = {
   let cell-terms
-  let cell-total-size = cell-size + stroke-size
+  let cell-total-size = cell-size // + stroke-size
 
   if manual-terms != none {
     cell-terms = manual-terms.map(x => to-gray-code(x, 8)) // TODO
@@ -52,10 +57,35 @@ Test
   zstack(
     alignment: bottom + left,
     (base, 0pt, 0pt), 
-    (square(
-      stroke: red + 0.5pt,
-      fill: rgb(255, 0, 0, 120)
-    ), 0pt, 0pt)
+
+    ..for (index, implicant) in implicants.enumerate() {
+      let p1 = gray-to-coordinate(implicant.at(0), 8) // TODO: different sizes
+      let p2 = gray-to-coordinate(implicant.at(1), 8)
+
+      let bottom-left-point
+      let top-right-point
+
+      bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
+      top-right-point = (calc.max(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
+
+      let dx = bottom-left-point.at(0) * cell-total-size
+      let dy = bottom-left-point.at(1) * cell-total-size
+
+      let width = (top-right-point.at(0) - bottom-left-point.at(0) + 1) * cell-size
+      let height = (top-right-point.at(1) - bottom-left-point.at(1) + 1) * cell-size
+
+      (
+        (
+          rect(
+            stroke: colors.at(index).transparentize(-100%) + stroke-size,
+            fill: colors.at(index),
+            width: width,
+            height: height,
+            radius: 5pt
+          ), dx, -dy
+        ),
+      )
+    }
   )
 
   for implicant in implicants {
@@ -65,5 +95,5 @@ Test
 
 #karnaugh-skeleton(
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
-  implicants: (6, 3)
+  implicants: ((2, 6), (0, 3), (1, 5))
 )
