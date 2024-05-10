@@ -1,4 +1,4 @@
-# `k-mapper` for Typst (v0.1.0)
+# `k-mapper` for Typst (v1.0.0)
 
 📖 See the `k-mapper` Manual [here](https://github.com/derekchai/typst-karnaugh-map/blob/437f80880eceb441ccecff7343dcc5183109bad7/karnaugh-map-manual.pdf)!
 
@@ -15,7 +15,7 @@ This is a package for adding Karnaugh maps into your Typst projects.
 Simply import `k-mapper` using the Typst package manager to begin using `k-mapper` within your Typst documents.
 
 ```typst
-#import "@preview/k-mapper:0.1.0": *
+#import "@preview/k-mapper:1.0.0": *
 ```
 
 ## Example
