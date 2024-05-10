@@ -49,3 +49,26 @@
     return n
   }
 }
+
+#let zstack(
+  alignment: top + left,
+  ..args
+) = style(styles => {
+    let width = 0pt
+    let height = 0pt
+    for item in args.pos() {
+        let size = measure(item.at(0), styles)
+        width = calc.max(width, size.width)
+        height = calc.max(height, size.height)
+    }
+    block(width: width, height: height, {
+        for item in args.pos() {
+            place(
+              alignment,
+              dx: item.at(1),
+              dy: item.at(2),
+              item.at(0)
+            )
+        }
+    })
+})
