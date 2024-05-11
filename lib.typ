@@ -44,10 +44,6 @@
   // Stroke size of the K-map.
   stroke-size: 0.5pt,
 
-  // The alpha value (transparency) of the colors in the K-map. A number between
-  // 0 and 255.
-  alpha: 120,
-
   // Array of colors to be used in the K-map. The first implicant uses the first
   // color, the second the second color, etc. If there are more implicants than
   // there are colors, they wrap around.
@@ -89,7 +85,7 @@
   let implicant-count = 0
 
   if manual-terms != none {
-    cell-terms = manual-terms.map(x => position-to-gray(x, grid-size)) // TODO
+    cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-size)))
   } else if minterms != none {
     cell-terms = (1, ) * grid-size
     for minterm in minterms {
@@ -417,7 +413,7 @@
 
 #karnaugh(
   16,
-  x-label: $A$, y-label: $B$,
+  x-label: $A$, y-label: "test",
   manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
   vertical-implicants: ((0, 8), (2, 11)),
   colors: (rgb(100, 100, 100, 100), )
