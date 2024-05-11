@@ -1,6 +1,6 @@
 # `k-mapper` for Typst (v1.0.0)
 
-📖 See the `k-mapper` Manual [here](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf)!
+📖 See the `k-mapper` Manual [here](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf)! The Manual features much more documentation, and is typeset using Typst.
 
 This is a package for adding Karnaugh maps into your Typst projects.
 
@@ -36,7 +36,7 @@ Simply import `k-mapper` using the Typst package manager to begin using `k-mappe
   )
   ```
 
-![Code result](https://github.com/derekchai/typst-karnaugh-map/blob/f1ec99d51b1e28e53c041e0d2a6220480d0dc52e/readme-example.png?raw=true)
+![Code result](https://github.com/derekchai/k-mapper/blob/005cb0a839499d0dfa90ee48d2128d41e582d755/readme-example.png)
 
 
 For more detailed documentation and examples, including function parameters, see the Manual [PDF](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf) and [Typst file](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.typ) in the [Github repo](https://github.com/derekchai/typst-karnaugh-map).
