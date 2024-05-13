@@ -42,7 +42,7 @@
   cell-size: 20pt,
 
   // Stroke size of the K-map.
-  stroke-size: 0.5pt,
+  stroke-width: 0.5pt,
 
   // Array of colors to be used in the K-map. The first implicant uses the first
   // color, the second the second color, etc. If there are more implicants than
@@ -64,7 +64,16 @@
   edge-implicant-overflow: 5pt,
 
   // Corner radius of the implicants.
-  implicant-radius: 5pt
+  implicant-radius: 5pt,
+
+  // How much to transparentize the implicant strokes by.
+  implicant-stroke-transparentize: -100%,
+
+  // How much to darken the implicant strokes by.
+  implicant-stroke-darken: 60%,
+
+  // Stroke width of implicants.
+  implicant-stroke-width: 0.5pt
 ) = {
   assert(
     minterms != none and maxterms == none and manual-terms == none
@@ -108,7 +117,7 @@
     columns: columns-dict.at(str(grid-size)),
     rows: cell-size,
     align: center + horizon,
-    stroke: stroke-size,
+    stroke: stroke-width,
 
     ..cell-terms.map(term => [#term])
   )
@@ -143,7 +152,7 @@
       (
         (
           rect(
-            stroke: color.darken(80%),
+            stroke: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
             fill: color,
             width: width,
             height: height,
@@ -180,9 +189,9 @@
         (
           rect(
             stroke: (
-              top: color.darken(80%),
-              right: color.darken(80%),
-              bottom: color.darken(80%)
+              top: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              right: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              bottom: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width
             ),
             fill: color,
             width: width ,
@@ -193,9 +202,9 @@
         (
           rect(
             stroke: (
-              top: color.darken(80%),
-              left: color.darken(80%),
-              bottom: color.darken(80%)
+              top: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              left: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              bottom: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width
             ),
             fill: color,
             width: width,
@@ -232,9 +241,9 @@
         (
           rect(
             stroke: (
-              left: color.darken(80%), 
-              top: color.darken(80%),
-              right: color.darken(80%)
+              left: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width, 
+              top: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              right: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width
             ),
             fill: color,
             width: width,
@@ -245,9 +254,9 @@
         (
           rect(
             stroke: (
-              left: color.darken(80%),
-              bottom: color.darken(80%),
-              right: color.darken(80%),
+              left: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              bottom: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
+              right: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width,
             ),
             fill: color,
             width: width,
@@ -300,7 +309,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (right: color.darken(80%), bottom: color.darken(80%)), 
+            stroke: (right: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width, bottom: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width), 
             fill: color,
             radius: (bottom-right: implicant-radius)
           ), dx-left, -dy-top
@@ -309,7 +318,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (left: color.darken(80%), bottom: color.darken(80%)), 
+            stroke: (left: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width, bottom: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width), 
             fill: color,
             radius: (bottom-left: implicant-radius)
           ), dx-right, -dy-top
@@ -318,7 +327,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (top: color.darken(80%), right: color.darken(80%)), 
+            stroke: (top: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width, right: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width), 
             fill: color,
             radius: (top-right: implicant-radius)
           ), dx-left, dy-bottom
@@ -327,7 +336,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (top: color.darken(80%), left: color.darken(80%)), 
+            stroke: (top: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width, left: color.darken(implicant-stroke-darken).transparentize(implicant-stroke-transparentize) + implicant-stroke-width), 
             fill: color,
             radius: (top-left: implicant-radius)
           ), dx-right, dy-bottom

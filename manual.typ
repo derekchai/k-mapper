@@ -133,7 +133,7 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
   
   Mutually exclusive with `minterms` and `manual-terms`.], [```typst 
   (0, 1, 2, 3, 
-    5, 11, 12)
+    5, 11, 12
 
   (7, )```],
 
@@ -303,5 +303,15 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
     horizontal-implicants: ((4, 14), ),
     corner-implicants: true,
   )
-  ```]
+  ```],
+
+  karnaugh(
+    8,
+    x-label: $C$,
+    y-label: $A B$,
+    manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
+    implicants: ((0, 3), (2, 7)),
+    horizontal-implicants: ((4, 5), ),
+    colors: (rgb(255, 255, 255, 0), )
+  )
 )
