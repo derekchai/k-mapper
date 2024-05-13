@@ -102,7 +102,7 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
   stroke: none,
   inset: 10pt,
 
-  table.header([*name*], [*default*], [*description*], [*examples*]),
+  table.header([*name*], [*default*], [*description*], [*example values*]),
 
   [*`grid-size`*\ `int`], [required], [The size of the Karnaugh map's grid. This value can be only `4` (2~by~2), `8` (2~by~4), or `16` (4~by~4). Any other values will throw an error.], [```
   4
@@ -149,28 +149,28 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
 
   ((0, 2), )```],
 
-  [*`horizontal-
-  implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _horizontal split_ implicant --- that is, one which wraps around the vertical edges of the Karnaugh map.], [```typst 
+  [*`horizontal
+  -implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _horizontal split_ implicant --- that is, one which wraps around the vertical edges of the Karnaugh map.], [```typst 
   // Grid-size 16
   ((0, 6), (8, 10))```],
 
-  [*`vertical-
-  implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _vertical split_ implicant --- that is, one which wraps around the horizontal edges of the Karnaugh map.], [```typst 
+  [*`vertical
+  -implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _vertical split_ implicant --- that is, one which wraps around the horizontal edges of the Karnaugh map.], [```typst 
   // Grid-size 8
   ((0, 4), )
   
   // Grid-size 16
   ((0, 9), (2, 10))```],
 
-  [*`corner-
-  implicants`*\ `bool`], [```typst false```], [A `bool` which indicates whether the Karnaugh map contains a `corner split` implicant --- that is, one which wraps around both vertical and horizontal edges of the Karnaugh map.], [```typst 
+  [*`corner
+  -implicants`*\ `bool`], [```typst false```], [A `bool` which indicates whether the Karnaugh map contains a `corner split` implicant --- that is, one which wraps around both vertical and horizontal edges of the Karnaugh map.], [```typst 
   true```],
 
   [*`cell-size`*\ `length`], [```typst 20pt```], [The size of an individual cell in the Karnaugh map.], [```typst 
   1cm
   ```],
 
-  [*`stroke-size`*\ `length`], [```typst 0.5pt```], [The stroke width of the Karnaugh map grid.], [```typst 
+  [*`stroke-width`*\ `length`], [```typst 0.5pt```], [The stroke width of the Karnaugh map grid.], [```typst 
   0.2pt
   ```],
 
@@ -194,6 +194,22 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
 
   [*`implicant-radius`*\ `length`], [```typst 5pt```], [The corner radius of implicants.], [```typst 
   3mm
+  ```],
+
+  [*`implicant-stroke
+  -transparentize`*\ `ratio`], [```typst #-100%```], [The ratio to transparentize the stroke color of implicants by. If set to `0%`, the stroke color of implicants are the same as the fill color, darked by the factor set in `implicant-stroke-darken` (`60%` by default). Negative values mean the stroke color becomes more opaque.], [```typst 
+  -50%
+  ```],
+
+  [*`implicant-stroke
+  -darken`*\ `ratio`], [```typst 60%```], [The ratio to darken the stroke color of implicants by.], [```typst 
+  100%
+  ```],
+
+
+  [*`implicant-stroke
+  -width`*\ `length`], [```typst 0.5pt```], [The stroke width of implicants.], [```typst 
+  1pt
   ```],
 )
 
@@ -312,6 +328,21 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
     horizontal-implicants: ((4, 5), ),
-    colors: (rgb(255, 255, 255, 0), )
+    colors: (rgb(255, 255, 255, 0), ),
+    implicant-stroke-width: 1pt
+  ),
+
+  [```typst
+  // No fill Karnaugh map
+  #karnaugh(
+    8,
+    x-label: $C$,
+    y-label: $A B$,
+    manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
+    implicants: ((0, 3), (2, 7)),
+    horizontal-implicants: ((4, 5), ),
+    colors: (rgb(255, 255, 255, 0), ),
+    implicant-stroke-width: 1pt
   )
+  ```]
 )
