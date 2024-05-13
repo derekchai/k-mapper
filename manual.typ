@@ -114,12 +114,12 @@ For example, the shaded cell above's Gray code position (`14`) can be determined
   [*`x-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
   $A$
 
-  "foo"```],
+  [foo]```],
 
   [*`y-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the left (y-axis) of the Karnaugh map.], [```typst 
   $B$
 
-  "bar"```],
+  [bar]```],
 
   [*`minterms`*\ `(int)`\ `none`], [```typst none```], [The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
   
