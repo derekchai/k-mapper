@@ -57,6 +57,8 @@ k-mapper is a Typst package for adding customizable Karnaugh maps of 2~by~2, 2~b
 
 \ This Manual has been typeset in Typst, using the k-mapper package, and is intended for the #version version of k-mapper. See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here].
 
+\ See the changelog for the package #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
+
 == using `karnaugh()`
 
 The main function of this package is the `karnaugh()` function, which allows you to create and customize all sizes of Karnaugh maps.

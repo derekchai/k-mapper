@@ -4,6 +4,8 @@
 
 This is a package for adding Karnaugh maps into your Typst projects.
 
+See the changelog for the package [here](https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md).
+
 ## Features
 
 - 2-variable (2 by 2) Karnaugh maps
