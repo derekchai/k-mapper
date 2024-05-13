@@ -143,7 +143,7 @@
       (
         (
           rect(
-            stroke: color,
+            stroke: color.darken(80%),
             fill: color,
             width: width,
             height: height,
@@ -180,9 +180,9 @@
         (
           rect(
             stroke: (
-              top: color,
-              right: color,
-              bottom: color
+              top: color.darken(80%),
+              right: color.darken(80%),
+              bottom: color.darken(80%)
             ),
             fill: color,
             width: width ,
@@ -193,9 +193,9 @@
         (
           rect(
             stroke: (
-              top: color,
-              left: color,
-              bottom: color
+              top: color.darken(80%),
+              left: color.darken(80%),
+              bottom: color.darken(80%)
             ),
             fill: color,
             width: width,
@@ -232,9 +232,9 @@
         (
           rect(
             stroke: (
-              left: color, 
-              top: color,
-              right: color
+              left: color.darken(80%), 
+              top: color.darken(80%),
+              right: color.darken(80%)
             ),
             fill: color,
             width: width,
@@ -245,9 +245,9 @@
         (
           rect(
             stroke: (
-              left: color,
-              bottom: color,
-              right: color,
+              left: color.darken(80%),
+              bottom: color.darken(80%),
+              right: color.darken(80%),
             ),
             fill: color,
             width: width,
@@ -300,7 +300,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (right: color, bottom: color), 
+            stroke: (right: color.darken(80%), bottom: color.darken(80%)), 
             fill: color,
             radius: (bottom-right: implicant-radius)
           ), dx-left, -dy-top
@@ -309,7 +309,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (left: color, bottom: color), 
+            stroke: (left: color.darken(80%), bottom: color.darken(80%)), 
             fill: color,
             radius: (bottom-left: implicant-radius)
           ), dx-right, -dy-top
@@ -318,7 +318,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (top: color, right: color), 
+            stroke: (top: color.darken(80%), right: color.darken(80%)), 
             fill: color,
             radius: (top-right: implicant-radius)
           ), dx-left, dy-bottom
@@ -327,7 +327,7 @@
           rect(
             width: width, 
             height: width, 
-            stroke: (top: color, left: color), 
+            stroke: (top: color.darken(80%), left: color.darken(80%)), 
             fill: color,
             radius: (top-left: implicant-radius)
           ), dx-right, dy-bottom
@@ -386,41 +386,3 @@
     )
   )
 }
-
-#karnaugh(
-  8,
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
-  implicants: ((0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6))
-)
-
-#karnaugh(
-  16,
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-  implicants: ((0, 5), (3, 11), (5, 10), (8, 12))
-)
-
-#karnaugh(
-  4,
-  manual-terms: (0, 1, 2, 3),
-  implicants: ((0, 1), (0, 2))
-)
-
-#karnaugh(
-  16,
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-  horizontal-implicants: ((12, 10), (0, 2))
-)
-
-#karnaugh(
-  16,
-  x-label: $A$, y-label: "test",
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-  vertical-implicants: ((0, 8), (2, 11)),
-  colors: (rgb(100, 100, 100, 100), )
-)
-
-#karnaugh(
-  16,
-  manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-  corner-implicants: true
-)
