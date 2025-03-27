@@ -29,7 +29,7 @@
   doc,
 )
 
-#show par: set block(spacing: 0.55em)
+#set par(spacing: 0.55em)
 #show heading: set block(above: 2em, below: 1em)
 #show "k-mapper": `k-mapper`
 #show link: underline
