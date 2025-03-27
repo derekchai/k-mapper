@@ -56,11 +56,11 @@
 #let zstack(
   alignment: top + left,
   ..args
-) = style(styles => {
+) = context {
     let width = 0pt
     let height = 0pt
     for item in args.pos() {
-        let size = measure(item.at(0), styles)
+        let size = measure(item.at(0))
         width = calc.max(width, size.width)
         height = calc.max(height, size.height)
     }
@@ -74,4 +74,4 @@
             )
         }
     })
-})
+}
