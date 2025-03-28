@@ -13,13 +13,9 @@
       title
     ),
     numbering: "1",
-    // margin: (1.5in)
   )
   set par(first-line-indent: 1em, justify: true)
-  set text(
-    font: "Linux Libertine",
-    size: 11pt,
-  )
+  set text(size: 11pt)
 
   columns(1, doc)
 }
@@ -29,35 +25,24 @@
   doc,
 )
 
-#set par(spacing: 0.55em)
+#set par(spacing: 1em, leading: 1em)
 #show heading: set block(above: 2em, below: 1em)
 #show "k-mapper": `k-mapper`
 #show link: underline
 
 = the k-mapper package #version
 
-#block(
-  fill: luma(240),
-  inset: 12pt,
-  radius: 4pt,
-  [
-    *Karnaugh map*
+#v(2em)
 
-    /ˈkɑːnɔː/
-
-    _noun_
-
-    \ a diagram consisting of a rectangular array of squares each representing a different combination of the variables in a Boolean function
-  ]
-)
+#columns(2)[
 
 == introduction
 
 k-mapper is a Typst package for adding customizable Karnaugh maps of 2~by~2, 2~by~4, and 4~by~4 grid sizes to your Typst projects.
 
-\ This Manual has been typeset in Typst, using the k-mapper package, and is intended for the #version version of k-mapper. See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here].
+This Manual has been typeset in Typst, using the k-mapper package, and is intended for the #version version of k-mapper. See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here].
 
-\ See the changelog for the package #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
+See the changelog for the package #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
 
 == using `karnaugh()`
 
@@ -72,7 +57,7 @@ The Gray code position of a cell in a Karnaugh map can be determined by looking 
 The empty maps below show each cell's Gray code position. Note that the Gray code position for a cell differs depending on the Karnaugh map's grid size.
 
 #grid(
-  columns: (1fr, 1fr, 1fr),
+  columns: (1fr),
   align: center + horizon,
   karnaugh(
     4,
@@ -90,12 +75,12 @@ The empty maps below show each cell's Gray code position. Note that the Gray cod
   )
 )
 
-For example, the shaded cell above's Gray code position (`14`) can be determined by concatenating the binary numbers to its left on the y-axis (`11`) and above it on the x-axis (`10`), giving `1110` which equals `14` in decimal.
-\
-\
-\
-\
+#v(1em)
 
+For example, the shaded cell above's Gray code position (`14`) can be determined by concatenating the binary numbers to its left on the y-axis (`11`) and above it on the x-axis (`10`), giving `1110` which equals `14` in decimal.
+]
+
+#colbreak()
 
 === function arguments
 
