@@ -17,7 +17,7 @@
       )
     ]
   )
-  set par(first-line-indent: 1em, justify: true)
+  set par(first-line-indent: 1em)
   set text(size: 11pt)
 
   columns(1, doc)
