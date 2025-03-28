@@ -5,14 +5,17 @@
 
 #let version = "1.1.0"
 
-#let conf(title, doc) = {
+#let conf(doc) = {
   set page(
     paper: "us-letter",
-    header: align(
-      right + horizon,
-      title
-    ),
-    numbering: "1",
+    footer: context [
+      *the `k-mapper` package* #version
+      #h(1fr)
+      #counter(page).display(
+        "1 of 1",
+        both: true,
+      )
+    ]
   )
   set par(first-line-indent: 1em, justify: true)
   set text(size: 11pt)
@@ -20,10 +23,7 @@
   columns(1, doc)
 }
 
-#show: doc => conf(
-  [the `k-mapper package`\ version #version],
-  doc,
-)
+#show: doc => conf(doc)
 
 #set par(spacing: 1em, leading: 1em)
 #show heading: set block(above: 2em, below: 1em)
