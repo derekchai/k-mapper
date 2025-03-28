@@ -137,17 +137,17 @@
 
   [bar]```],
 
-  [*`minterms`*\ `(int)`\ `none`], [```typst none```], [The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
+  [#strike(stroke: 1pt)[*`minterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms`) #strike[The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
   
-  Mutually exclusive with `maxterms` and `manual-terms`.], [```typst 
+  Mutually exclusive with `maxterms` and `manual-terms`.]], [```typst 
   (3, 4, 6)
 
   (1, )
   ```],
 
-  [*`maxterms`*\ `(int)`\ `none`], [```typst none```], [The array of Gray code positions@gcp where at that position is a maxterm (`1`).
+  [#strike(stroke: 1pt)[*`maxterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms` #strike[The array of Gray code positions@gcp where at that position is a maxterm (`1`).
   
-  Mutually exclusive with `minterms` and `manual-terms`.], [```typst 
+  Mutually exclusive with `minterms` and `manual-terms`.]], [```typst 
   (0, 1, 2, 3, 
     5, 11, 12
 
