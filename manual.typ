@@ -237,7 +237,7 @@
 
   karnaugh(
     4,
-    minterms: (0, ),
+    manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), )
   ),
@@ -246,7 +246,7 @@
   // Grayscale Karnaugh map
   #karnaugh(
     4,
-    minterms: (0, ),
+    manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), ) // <-
   )
@@ -276,7 +276,7 @@
     16,
     x-label: $C D$,
     y-label: $A B$,
-    maxterms: (0, 2, 5, 7, 13, 15, 8, 10),
+    manual-terms: (1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1),
     implicants: ((5, 15), ),
     corner-implicants: true
   ),
@@ -286,7 +286,10 @@
     16,
     x-label: $C D$,
     y-label: $A B$,
-    maxterms: (0, 2, 5, 7, 13, 15, 8, 10),
+    manual-terms: (
+      1, 0, 1, 0, 0, 1, 0, 1, 
+      1, 0, 1, 0, 0, 1, 0, 1
+    ),
     implicants: ((5, 15), ),
     corner-implicants: true
   )
