@@ -81,7 +81,9 @@ Gray code position allows you to input minterms and maxterms using `manual-terms
   ),
   scope: "parent",
   placement: bottom,
-  caption: [Gray Code positions for three sizes of Karnaugh maps.]
+  caption: [Gray Code positions for three sizes of Karnaugh maps.],
+  kind: "diagram",
+  supplement: [Diagram]
 )<gray-code-positions>
 ]
 
