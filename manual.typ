@@ -229,6 +229,11 @@
   ```],
 )
 
+=== deprecation of `minterms` and `maxterms`
+These two function parameters have been deprecated as I mixed up minterms and maxterms when initially writing this package. Rather than rename and risk breaking changes, I have decided to deprecate them and encourage the use of `manual-terms` instead.
+
+Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out this issue.
+
 == examples
 #grid(
   columns: (auto, 1fr),
