@@ -3,7 +3,7 @@
 
 #import "lib.typ": *
 
-#let version = "1.1.0"
+#let version = "1.2.0"
 
 #let conf(doc) = {
   set page(
