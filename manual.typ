@@ -34,26 +34,52 @@
 
 #v(2em)
 
+#figure(
+  grid(
+    columns: (1fr, 1fr),
+    karnaugh(
+      16,
+      x-label: $A B$,
+      y-label: $C D$,
+      manual-terms: (0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0),
+      implicants: ((3, 6), (2, 10), (9, 11)),
+    ),
+    ```typst
+    karnaugh(
+      16,
+      x-label: $A B$,
+      y-label: $C D$,
+      manual-terms: (
+        0, 0, 1, 1, 0, 0, 1, 1, 
+        0, 1, 1, 1, 0, 0, 1, 0
+      ),
+      implicants: ((3, 6), (2, 10), (9, 11)),
+    )
+    ```
+  ),
+  caption: [Example implementation and code of a Karnaugh map with `k-mapper`.],
+  kind: "diagram",
+  supplement: [Diagram]
+)
+
+#v(1em)
+
 #columns(2)[
   == introduction
 
   k-mapper is a Typst package for adding customizable Karnaugh maps of 2~by~2, 2~by~4, and 4~by~4 grid sizes to your Typst projects.
 
-  This Manual has been typeset in Typst, using the k-mapper package, and is intended for the #version version of k-mapper. See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here].
-
-  See the changelog for the package #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
+  See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here], and the changelog #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
 
   == using `karnaugh()`
-  The main function of this package is the `karnaugh()` function, which allows you to create and customize all sizes of Karnaugh maps.
+  The main function of this package is the `karnaugh()` function, which allows you to create and customize all sizes of Karnaugh maps. See the following pages for function arguments.
 
   === gray code position
   The position of implicants in k-mapper are declared via _Gray code position_. This is similar to Karnaugh map packages in LaTeX. 
 
-  The Gray code position of a cell in a Karnaugh map can be determined by looking at the Gray code labels of the Karnaugh map: the Gray code position is the decimal equivalent of the binary number formed from the number(s) on the left and the number(s) on the top.
+  The Gray code position of a cell is determined from the coordinates of that cell with respect to the binary axis labels.
 
   The empty maps shown in @gray-code-positions show each cell's Gray code position. Note that the Gray code position for a cell differs depending on the Karnaugh map's grid size.
-
-  For example, the Gray code position (`14`) of the shaded cell in @gray-code-positions can be determined by concatenating the binary numbers to its left on the y-axis (`11`) and above it on the x-axis (`10`), giving `1110` which equals `14` in decimal.
 
   Gray code position allows you to input minterms and maxterms using `manual-terms` simply by copying your truth table in that order. 
 
