@@ -127,15 +127,23 @@
 
   16```],
 
-  [*`x-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
+  [*`x-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map. (For style 0)], [```typst 
   $A$
 
   [foo]```],
 
-  [*`y-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the left (y-axis) of the Karnaugh map.], [```typst 
+  [*`y-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the left (y-axis) of the Karnaugh map. (For style 0)], [```typst 
   $B$
 
   [bar]```],
+
+  [*`labels`*\ `(string | content)`], [```typst ()```], [The labels (usually variable names) to be placed for their respective values. (For styles 1, 2)], [```typst 
+  ("A", "B", "C")
+
+  ([bar],)```],
+
+  [*`style`*\ `int`], [```typst 0```], [The labeling style, that should be used. May be 0, 1 or 2.], [```typst 
+  0```],
 
   [#strike(stroke: 1pt)[*`minterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms`) #strike[The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
   

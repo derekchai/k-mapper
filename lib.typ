@@ -4,11 +4,17 @@
   // 4, 8, 16
   grid-size,
 
-  // Label to go on the x-axis of the K-map.
+  // Label to go on the x-axis of the K-map. (For style 0)
   x-label: $$,
 
-  // Label to go on the y-axis of the K-map.
+  // Label to go on the y-axis of the K-map. (For style 0)
   y-label: $$,
+
+  // The labels (usually variable names) to be placed for their respective values. (For styles 1, 2) 
+  labels: (),
+
+  // The labeling style, that should be used. May be 0, 1 or 2.
+  style: 0,
 
   // Gray code positions where there is a 0. Otherwise the K-map is filled with 1s.
   minterms: none,
@@ -86,6 +92,17 @@
     assert(manual-terms.len() == grid-size,
     message: "Please provide exactly the correct number of terms for the" +
     "respective grid size!")
+  }
+
+  assert(style >= 0 and style <= 2,
+    message: "Unsupported Style, must be one of 0, 1, 2")
+  if style != 0 {
+    assert(
+      labels.len() == 2 and grid-size == 4
+      or labels.len() == 3 and grid-size == 8
+      or labels.len() == 4 and grid-size == 16,
+      message: "In alt-style you need to provide the matching amount of labels"
+    )
   }
 
   // Top-to-bottom, left-to-right terms.
@@ -346,52 +363,135 @@
   )
 
   // Labels.
-  let x-gray
-  if grid-size == 16 {
-    x-gray = table(
-      columns: (cell-size,) * 4,
-      rows: cell-size,
-      align: center + bottom,
-      stroke: none,
-      [00], [01], [11], [10]
+  if style == 0 {
+    let x-gray
+    if grid-size == 16 {
+      x-gray = table(
+        columns: (cell-size,) * 4,
+        rows: cell-size,
+        align: center + bottom,
+        stroke: none,
+        [00], [01], [11], [10]
+      )
+    } else {
+      x-gray = table(
+        columns: (cell-size,) * 2,
+        rows: cell-size,
+        align: center + bottom,
+        stroke: none,
+        [0], [1]
+      ) 
+    }
+
+    let y-gray
+    if grid-size == 4 {
+      y-gray = table(
+        columns: cell-size,
+        rows: cell-size,
+        align: right + horizon,
+        stroke: none,
+        [0], [1]
+      )
+    } else {
+      y-gray = table(
+        columns: cell-size,
+        rows: cell-size,
+        align: right + horizon,
+        stroke: none,
+        [00], [01], [11], [10]
+      )
+    }
+
+    block(
+      breakable: false,
+      grid(
+        columns: 3,
+        align: center + horizon,
+        [], [], x-label,
+        [], [], x-gray,
+        y-label, y-gray, body,
+      )
     )
   } else {
-    x-gray = table(
-      columns: (cell-size,) * 2,
-      rows: cell-size,
-      align: center + bottom,
-      stroke: none,
-      [0], [1]
-    ) 
+    let top-label
+    if grid-size == 16 {
+      top-label = table(
+        columns: (cell-size,) * 4,
+        rows: cell-size,
+        align: center + bottom,
+        stroke: none,
+        table.cell(colspan: 2, if style == 2 {[]} else {$overline(#labels.at(2))$}),
+        table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(2)$),
+      )
+    } else {
+      let i = if grid-size == 4 {1} else {2}
+      top-label = table(
+        columns: (cell-size,) * 2,
+        rows: cell-size,
+        align: center + bottom,
+        stroke: none,
+        if style == 2 {[]} else {$overline(#labels.at(i))$},
+        table.cell(stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(i)$),
+      )
+    }
+    let bottom-label
+    if grid-size == 16 {
+      bottom-label = table(
+        columns: (cell-size,) * 4,
+        rows: cell-size,
+        align: center + top,
+        stroke: none,
+        if style == 2 {[]} else {$overline(#labels.at(3))$},
+        table.cell(colspan: 2, stroke: if style == 2 {(top: black + 2pt)} else {none}, $#labels.at(3)$),
+        if style == 2 {[]} else {$overline(#labels.at(3))$}
+      )
+    } else {
+      bottom-label = []
+    }
+    let left-label
+    if grid-size == 4 {
+      left-label = table(
+        columns: cell-size,
+        rows: cell-size,
+        align: right + horizon,
+        stroke: none,
+        table.cell(stroke: if style == 2 {(right: black + 2pt)} else {none}, $#labels.at(0)$),
+        if style == 2 {[]} else {$overline(#labels.at(0))$}
+      )
+    } else {
+      left-label = table(
+        columns: cell-size,
+        rows: cell-size,
+        align: right + horizon,
+        stroke: none,
+        table.cell(rowspan: 2, if style == 2 {[]} else {$overline(#labels.at(0))$}),
+        table.cell(rowspan: 2, stroke: if style == 2 {(right: black + 2pt)} else {none}, $#labels.at(0)$),
+      )
+    }
+    let right-label
+    if grid-size == 4 {
+      right-label = []
+    } else {
+      right-label = table(
+        columns: cell-size,
+        rows: cell-size,
+        align: left + horizon,
+        stroke: none,
+        if style == 2 {[]} else {$overline(#labels.at(1))$},
+        table.cell(rowspan: 2, stroke: if style == 2 {(left: black + 2pt)} else {none}, $#labels.at(1)$),
+        if style == 2 {[]} else {$overline(#labels.at(1))$}
+      )
+    }
+  
+    block(
+      breakable: false,
+      grid(
+        columns: 3,
+        align: center + horizon,
+        [], top-label, [],
+        left-label, body, right-label,
+        [], bottom-label, [],
+      )
+    )
   }
-
-  let y-gray
-  if grid-size == 4 {
-    y-gray = table(
-      columns: cell-size,
-      rows: cell-size,
-      align: right + horizon,
-      stroke: none,
-      [0], [1]
-    )
-  } else {
-    y-gray = table(
-      columns: cell-size,
-      rows: cell-size,
-      align: right + horizon,
-      stroke: none,
-      [00], [01], [11], [10]
-    )
-  }
-
-  block(
-    breakable: false,
-    grid(
-      columns: 3,
-      align: center + horizon,
-      [], [], x-label,
-      [], [], x-gray,
-      y-label, y-gray, body,
-    )
-  )
 }
