@@ -142,7 +142,7 @@
 
   ([bar],)```],
 
-  [*`style`*\ `int`], [```typst 0```], [The labeling style, that should be used. May be 0, 1 or 2.], [```typst 
+  [*`style`*\ `int`], [```typst 0```], [The labeling style to be used. May be `0`, `1` or `2`; see #link(<map-styles>)[map styles] for examples.], [```typst 
   0```],
 
   [#strike(stroke: 1pt)[*`minterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms`) #strike[The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
@@ -237,10 +237,69 @@
   ```],
 )
 
+#colbreak()
+
+=== map styles<map-styles>
+
+The `style` parameter can be used to dictate the variable labeling styles. The
+value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
+
+#grid(
+  columns: (1fr, 1fr, 1fr),
+  align: center,
+  figure(
+    karnaugh(
+      16,
+      x-label: $A B$,
+      y-label: $C D$,
+      style: 0,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `0`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+
+  figure(
+    karnaugh(
+      16,
+      labels: ($A$, $B$, $C$, $D$),
+      style: 1,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `1`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+
+  figure(
+    karnaugh(
+      16,
+      labels: ($A$, $B$, $C$, $D$),
+      style: 2,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `2`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+)
+
 === deprecation of `minterms` and `maxterms`
 These two function parameters have been deprecated as I mixed up minterms and maxterms when initially writing this package. Rather than rename and risk breaking changes, I have decided to deprecate them and encourage the use of `manual-terms` instead.
 
 Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out this issue.
+
+#colbreak()
 
 == examples
 #grid(
@@ -375,5 +434,5 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
     colors: (rgb(255, 255, 255, 0), ),
     implicant-stroke-width: 1pt
   )
-  ```]
+  ```],
 )
