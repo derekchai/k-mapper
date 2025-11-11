@@ -364,6 +364,25 @@
 
   // Labels.
   if style == 0 {
+    let x-label1
+    let y-label1
+
+    x-label1 = if labels == () { 
+      x-label 
+    } else if grid-size == 4 or grid-size == 8 {
+      labels.last()
+    } else {
+      [#labels.at(2)#labels.at(3)]
+    }
+
+    y-label1 = if labels == () {
+      y-label
+    } else if grid-size == 4 {
+      labels.first()
+    } else {
+      [#labels.at(0)#labels.at(1)]
+    }
+
     let x-gray
     if grid-size == 16 {
       x-gray = table(
@@ -407,9 +426,9 @@
       grid(
         columns: 3,
         align: center + horizon,
-        [], [], x-label,
+        [], [], x-label1,
         [], [], x-gray,
-        y-label, y-gray, body,
+        y-label1, y-gray, body,
       )
     )
   } else {
