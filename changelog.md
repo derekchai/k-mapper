@@ -1,7 +1,9 @@
 # Changelog
 
+## 1.3.0 (latest)
+- Added `style` parameter on `karnaugh()`
 
-## 1.2.0 (latest)
+## 1.2.0 
 - Deprecated `minterms` and `maxterms` parameters on `karnaugh()`; use `manual-terms` instead
     - Update Manual to reflect this deprecation
 - Replaced use of `style` (deprecated in Typst 0.13.0) with `context` expression; `k-mapper` should now compile when using Typst 0.13.x. 
