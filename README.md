@@ -1,4 +1,4 @@
-# `k-mapper` for Typst (1.2.0)
+# `k-mapper` for Typst (1.3.0)
 
 📖 See the `k-mapper` Manual [here](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf)! The Manual features much more documentation, and is typeset using Typst.
 

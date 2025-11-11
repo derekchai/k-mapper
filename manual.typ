@@ -3,7 +3,7 @@
 
 #import "lib.typ": *
 
-#let version = "1.2.0"
+#let version = "1.3.0"
 
 #let conf(doc) = {
   set page(
@@ -39,16 +39,14 @@
     columns: (1fr, 1fr),
     karnaugh(
       16,
-      x-label: $A B$,
-      y-label: $C D$,
+      labels: ($A$, $B$, $C$, $D$),
       manual-terms: (0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0),
       implicants: ((3, 6), (2, 10), (9, 11)),
     ),
     ```typst
-    karnaugh(
+    #karnaugh(
       16,
-      x-label: $A B$,
-      y-label: $C D$,
+      labels: ($A$, $B$, $C$, $D$),
       manual-terms: (
         0, 0, 1, 1, 0, 0, 1, 1, 
         0, 1, 1, 1, 0, 0, 1, 0
@@ -127,15 +125,23 @@
 
   16```],
 
-  [*`x-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
+  [#strike(stroke: 1pt)[*`x-label`*]\ `content`], [```typst $$```], [(Deprecated; use `labels`) ] + strike[The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
   $A$
 
   [foo]```],
 
-  [*`y-label`*\ `content`], [```typst $$```], [The label (usually a variable name) to go on the left (y-axis) of the Karnaugh map.], [```typst 
+  [#strike(stroke: 1pt)[*`y-label`*]\ `content`], [```typst $$```], [(Deprecated; use `labels`) ] + strike[The label (usually a variable name) to go on the left (y-axis) of the Karnaugh map.], [```typst 
   $B$
 
   [bar]```],
+
+  [*`labels`*\ `(string | content)`], [```typst ()```], [The labels (usually variable names) to be placed for their respective values.], [```typst 
+  ("A", "B", "C")
+
+  ([bar],)```],
+
+  [*`style`*\ `int`], [```typst 0```], [The labeling style to be used. May be `0`, `1` or `2`; see #link(<map-styles>)[map styles] for examples.], [```typst 
+  0```],
 
   [#strike(stroke: 1pt)[*`minterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms`) #strike[The `array` of Gray code positions#footnote[See p. 1.]<gcp> where at that position is a minterm (`0`).
   
@@ -145,7 +151,7 @@
   (1, )
   ```],
 
-  [#strike(stroke: 1pt)[*`maxterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms` #strike[The array of Gray code positions@gcp where at that position is a maxterm (`1`).
+  [#strike(stroke: 1pt)[*`maxterms`*]\ `(int)`\ `none`], [```typst none```], [(Deprecated; use `manual-terms`) #strike[The array of Gray code positions@gcp where at that position is a maxterm (`1`).
   
   Mutually exclusive with `minterms` and `manual-terms`.]], [```typst 
   (0, 1, 2, 3, 
@@ -229,10 +235,68 @@
   ```],
 )
 
+#colbreak()
+
+=== map styles<map-styles>
+
+The `style` parameter can be used to dictate the variable labeling styles. The
+value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
+
+#grid(
+  columns: (1fr, 1fr, 1fr),
+  align: center,
+  figure(
+    karnaugh(
+      16,
+      labels: ($A$, $B$, $C$, $D$),
+      style: 0,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `0`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+
+  figure(
+    karnaugh(
+      16,
+      labels: ($A$, $B$, $C$, $D$),
+      style: 1,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `1`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+
+  figure(
+    karnaugh(
+      16,
+      labels: ($A$, $B$, $C$, $D$),
+      style: 2,
+      manual-terms: (
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+      ),
+    ),
+    caption: [Style `2`],
+    kind: "diagram",
+    supplement: [Diagram]
+  ),
+)
+
 === deprecation of `minterms` and `maxterms`
 These two function parameters have been deprecated as I mixed up minterms and maxterms when initially writing this package. Rather than rename and risk breaking changes, I have decided to deprecate them and encourage the use of `manual-terms` instead.
 
 Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out this issue.
+
+#colbreak()
 
 == examples
 #grid(
@@ -259,8 +323,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   
   karnaugh(
     8,
-    x-label: $C$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
     vertical-implicants: ((1, 5), )
@@ -269,19 +332,20 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   #karnaugh(
     8,
-    x-label: $C$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
     vertical-implicants: ((1, 5), )
-  )
+  ),
   ```],
 
   karnaugh(
     16,
-    x-label: $C D$,
-    y-label: $A B$,
-    manual-terms: (1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1),
+    labels: ($A$, $B$, $C$, $D$),
+    manual-terms: (
+      1, 0, 1, 0, 0, 1, 0, 1, 
+      1, 0, 1, 0, 0, 1, 0, 1
+    ),
     implicants: ((5, 15), ),
     corner-implicants: true
   ),
@@ -289,15 +353,14 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   #karnaugh(
     16,
-    x-label: $C D$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       1, 0, 1, 0, 0, 1, 0, 1, 
       1, 0, 1, 0, 0, 1, 0, 1
     ),
     implicants: ((5, 15), ),
     corner-implicants: true
-  )
+  ),
   ```],
 
   karnaugh(
@@ -321,6 +384,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
     16,
     x-label: $C D$,
     y-label: $A B$,
+    labels: ($A$, $B$, $C$, $D$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
     implicants: ((5, 7), (5, 13), (15, 15)),
     vertical-implicants: ((1, 11), ),
@@ -331,8 +395,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   #karnaugh(
     16,
-    x-label: $C D$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       0, 1, 2, 3, 4, 5, 6, 7, 8, 
       9, 10, 11, 12, 13, 14, 15
@@ -346,8 +409,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   karnaugh(
     8,
-    x-label: $C$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
     horizontal-implicants: ((4, 5), ),
@@ -359,13 +421,12 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   // No fill Karnaugh map
   #karnaugh(
     8,
-    x-label: $C$,
-    y-label: $A B$,
+    labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
     horizontal-implicants: ((4, 5), ),
     colors: (rgb(255, 255, 255, 0), ),
     implicant-stroke-width: 1pt
   )
-  ```]
+  ```],
 )
