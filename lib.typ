@@ -2,7 +2,7 @@
 
 #let karnaugh(
   // 4, 8, 16
-  grid-size,
+  grid-str,
 
   // Label to go on the x-axis of the K-map. (For style 0)
   x-label: $$,
@@ -81,6 +81,17 @@
   // Stroke width of implicants.
   implicant-stroke-width: 0.5pt
 ) = {
+  let grid-size
+  if grid-str == "2x2" {
+    grid-size = 4
+  } else if grid-str == "2x4" {
+    grid-size = 8
+  } else if grid-str == "4x2" {
+    grid-size = 8
+  } else if grid-str == "4x4" {
+    grid-size = 16
+  }
+
   assert(
     minterms != none and maxterms == none and manual-terms == none
     or minterms == none and maxterms != none and manual-terms == none
@@ -111,27 +122,28 @@
   let implicant-count = 0
 
   if manual-terms != none {
-    cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-size)))
+    cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-str)))
   } else if minterms != none {
     cell-terms = (1, ) * grid-size
     for minterm in minterms {
-      cell-terms.at(position-to-gray(minterm, grid-size)) = 0
+      cell-terms.at(position-to-gray(minterm, grid-str)) = 0
     }
   } else {
     cell-terms = (0, ) * grid-size
     for maxterm in maxterms {
-      cell-terms.at(position-to-gray(maxterm, grid-size)) = 1
+      cell-terms.at(position-to-gray(maxterm, grid-str)) = 1
     }
   }
 
   let columns-dict = (
-    "4": (cell-size, cell-size),
-    "8": (cell-size, cell-size),
-    "16": (cell-size, cell-size, cell-size, cell-size),
+    "2x2": (cell-size, cell-size),
+    "2x4": (cell-size, cell-size),
+    "4x2": (cell-size, cell-size, cell-size, cell-size),
+    "4x4": (cell-size, cell-size, cell-size, cell-size),
   )
 
   let base = table(
-    columns: columns-dict.at(str(grid-size)),
+    columns: columns-dict.at(grid-str),
     rows: cell-size,
     align: center + horizon,
     stroke: stroke-width,
@@ -147,8 +159,8 @@
     ..for (index, implicant) in implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
 
       let bottom-left-point
       let top-right-point
@@ -183,8 +195,8 @@
     ..for (index, implicant) in horizontal-implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
 
       let bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       let bottom-right-point = (calc.max(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
@@ -236,8 +248,8 @@
     ..for (index, implicant) in vertical-implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
 
       let bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       let top-left-point = (calc.min(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
@@ -296,18 +308,21 @@
       //
       // For example, at index 3, in a 4x4 K-map, the Gray code at that corner
       // is 10.
-      let grid-size-4-corners = (0, 1, 2, 3).map(x => gray-to-coordinate(x, 4))
-      let grid-size-8-corners = (0, 1, 4, 5).map(x => gray-to-coordinate(x, 8))
-      let grid-size-16-corners = (0, 2, 8, 10).map(x => gray-to-coordinate(x, 16))
+      let grid-size-2x2-corners = (0, 1, 2, 3).map(x => gray-to-coordinate(x, "2x2"))
+      let grid-size-2x4-corners = (0, 1, 4, 5).map(x => gray-to-coordinate(x, "2x4"))
+      let grid-size-4x2-corners = (0, 2, 4, 6).map(x => gray-to-coordinate(x, "4x2"))
+      let grid-size-4x4-corners = (0, 2, 8, 10).map(x => gray-to-coordinate(x, "4x4"))
 
       let corners
 
-      if grid-size == 4 {
-        corners = grid-size-4-corners
-      } else if grid-size == 8 {
-        corners = grid-size-8-corners
+      if grid-str == "2x2" {
+        corners = grid-size-2x2-corners
+      } else if grid-str == "2x4" {
+        corners = grid-size-2x4-corners
+      } else if grid-str == "4x2" {
+        corners = grid-size-4x2-corners
       } else {
-        corners = grid-size-16-corners
+        corners = grid-size-4x4-corners
       }
 
       let dx-left = -edge-implicant-overflow + implicant-inset
@@ -369,22 +384,24 @@
 
     x-label1 = if labels == () { 
       x-label 
-    } else if grid-size == 4 or grid-size == 8 {
+    } else if grid-str == "2x2" or grid-str == "2x4" {
       labels.last()
+    } else if grid-str == "4x2" {
+      [#labels.at(1)#labels.at(2)]
     } else {
       [#labels.at(2)#labels.at(3)]
     }
 
     y-label1 = if labels == () {
       y-label
-    } else if grid-size == 4 {
+    } else if grid-str == "2x2" or grid-str == "4x2" {
       labels.first()
     } else {
       [#labels.at(0)#labels.at(1)]
     }
 
     let x-gray
-    if grid-size == 16 {
+    if grid-str == "4x4" or grid-str == "4x2" {
       x-gray = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
@@ -403,7 +420,7 @@
     }
 
     let y-gray
-    if grid-size == 4 {
+    if grid-str == "2x2" or grid-str == "4x2" {
       y-gray = table(
         columns: cell-size,
         rows: cell-size,

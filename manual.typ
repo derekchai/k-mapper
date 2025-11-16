@@ -38,14 +38,14 @@
   grid(
     columns: (1fr, 1fr),
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       manual-terms: (0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0),
       implicants: ((3, 6), (2, 10), (9, 11)),
     ),
     ```typst
     #karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       manual-terms: (
         0, 0, 1, 1, 0, 0, 1, 1, 
@@ -86,15 +86,15 @@
       columns: (1fr, 1fr, 1fr),
       align: center + horizon,
       karnaugh(
-        4,
+        "2x2",
         manual-terms: (0, 1, 2, 3)
       ),
       karnaugh(
-        8,
+        "2x4",
         manual-terms: (0, 1, 2, 3, 4, 5, 6, 7)
       ),
       karnaugh(
-        16,
+        "4x4",
         manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
         implicants: ((14, 14), ),
         colors: ((rgb(100, 100, 100, 100), ))
@@ -118,12 +118,12 @@
 
   table.header([*name*], [*default*], [*description*], [*example values*]),
 
-  [*`grid-size`*\ `int`], [required], [The size of the Karnaugh map's grid. This value can be only `4` (2~by~2), `8` (2~by~4), or `16` (4~by~4). Any other values will throw an error.], [```
-  4
+  [*`grid-size`*\ `int`], [required], [The size of the Karnaugh map's grid. This value can be only `"2x2"` (2~by~2), `"2x4"` (2~by~4), or `"4x4"` (4~by~4). Any other values will throw an error.], [```
+  2x2
 
-  8
+  2x4
 
-  16```],
+  4x4```],
 
   [#strike(stroke: 1pt)[*`x-label`*]\ `content`], [```typst $$```], [(Deprecated; use `labels`) ] + strike[The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
   $A$
@@ -247,7 +247,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
   align: center,
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 0,
       manual-terms: (
@@ -262,7 +262,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
 
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 1,
       manual-terms: (
@@ -277,7 +277,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
 
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 2,
       manual-terms: (
@@ -305,7 +305,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   gutter: 20pt,
 
   karnaugh(
-    4,
+    "2x2",
     manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), )
@@ -314,7 +314,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   // Grayscale Karnaugh map
   #karnaugh(
-    4,
+    "2x2",
     manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), ) // <-
@@ -322,7 +322,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
   
   karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
@@ -331,7 +331,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
@@ -339,8 +339,27 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ),
   ```],
 
+
   karnaugh(
-    16,
+    "4x2",
+    labels: ($A$, $B$, $C$),
+    manual-terms: (0, 1, 2, 3, 4, "X", 6, 7),
+    implicants: ((6, 7), (1, 5)),
+    horizontal-implicants: ((2, 4), ),
+  ),
+
+  [```typst
+  #karnaugh(
+    "4x2",
+    labels: ($A$, $B$, $C$),
+    manual-terms: (0, 1, 2, 3, 4, "X", 6, 7),
+    implicants: ((6, 7), (1, 5)),
+    horizontal-implicants: ((2, 4), ),
+  ),
+  ```],
+
+  karnaugh(
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       1, 0, 1, 0, 0, 1, 0, 1, 
@@ -352,7 +371,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    16,
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       1, 0, 1, 0, 0, 1, 0, 1, 
@@ -364,14 +383,14 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    8,
+    "2x4",
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)),
   ),
 
   [```typst
   #karnaugh(
-    8,
+    "2x4",
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: (
       (0, 0), (1, 1), (2, 2), (3, 3), 
@@ -381,7 +400,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    16,
+    "4x4",
     x-label: $C D$,
     y-label: $A B$,
     labels: ($A$, $B$, $C$, $D$),
@@ -394,7 +413,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    16,
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       0, 1, 2, 3, 4, 5, 6, 7, 8, 
@@ -408,7 +427,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
@@ -420,7 +439,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   // No fill Karnaugh map
   #karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
