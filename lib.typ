@@ -450,17 +450,18 @@
     )
   } else {
     let top-label
-    if grid-size == 16 {
+    if grid-str == "4x4" or grid-str == "4x2" {
+      let i = if grid-str == "4x4" {2} else {1}
       top-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
         align: center + bottom,
         stroke: none,
-        table.cell(colspan: 2, if style == 2 {[]} else {$overline(#labels.at(2))$}),
-        table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(2)$),
+        table.cell(colspan: 2, if style == 2 {[]} else {$overline(#labels.at(i))$}),
+        table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(i)$),
       )
     } else {
-      let i = if grid-size == 4 {1} else {2}
+      let i = if grid-str == "2x2" {1} else {2}
       top-label = table(
         columns: (cell-size,) * 2,
         rows: cell-size,
@@ -471,21 +472,22 @@
       )
     }
     let bottom-label
-    if grid-size == 16 {
+    if grid-str == "4x4" or grid-str == "4x2" {
+      let i = if grid-str == "4x4" {3} else {2}
       bottom-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
         align: center + top,
         stroke: none,
-        if style == 2 {[]} else {$overline(#labels.at(3))$},
-        table.cell(colspan: 2, stroke: if style == 2 {(top: black + 2pt)} else {none}, $#labels.at(3)$),
-        if style == 2 {[]} else {$overline(#labels.at(3))$}
+        if style == 2 {[]} else {$overline(#labels.at(i))$},
+        table.cell(colspan: 2, stroke: if style == 2 {(top: black + 2pt)} else {none}, $#labels.at(i)$),
+        if style == 2 {[]} else {$overline(#labels.at(i))$}
       )
     } else {
       bottom-label = []
     }
     let left-label
-    if grid-size == 4 {
+    if grid-str == "2x2" or grid-str == "4x2" {
       left-label = table(
         columns: cell-size,
         rows: cell-size,
@@ -505,7 +507,7 @@
       )
     }
     let right-label
-    if grid-size == 4 {
+    if grid-str == "2x2" or grid-str == "4x2" {
       right-label = []
     } else {
       right-label = table(
