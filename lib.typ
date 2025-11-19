@@ -2,7 +2,7 @@
 
 #let karnaugh(
   // 4, 8, 16
-  grid-str,
+  grid-size,
 
   // Label to go on the x-axis of the K-map. (For style 0)
   x-label: $$,
@@ -81,15 +81,24 @@
   // Stroke width of implicants.
   implicant-stroke-width: 0.5pt
 ) = {
-  let grid-size
-  if grid-str == "2x2" {
-    grid-size = 4
-  } else if grid-str == "2x4" {
-    grid-size = 8
-  } else if grid-str == "4x2" {
-    grid-size = 8
-  } else if grid-str == "4x4" {
-    grid-size = 16
+
+  if grid-size == 4 {
+    grid-size = "2x2"
+  } else if grid-size == 8 {
+    grid-size = "2x4"
+  } else if grid-size == 16 {
+    grid-size = "4x4"
+  }
+
+  let cell-count
+  if grid-size == "2x2" {
+    cell-count = 4
+  } else if grid-size == "2x4" {
+    cell-count = 8
+  } else if grid-size == "4x2" {
+    cell-count = 8
+  } else if grid-size == "4x4" {
+    cell-count = 16
   }
 
   assert(
@@ -100,7 +109,7 @@
   )
 
   if manual-terms != none {
-    assert(manual-terms.len() == grid-size,
+    assert(manual-terms.len() == cell-count,
     message: "Please provide exactly the correct number of terms for the" +
     "respective grid size!")
   }
@@ -109,9 +118,9 @@
     message: "Unsupported Style, must be one of 0, 1, 2")
   if style != 0 {
     assert(
-      labels.len() == 2 and grid-size == 4
-      or labels.len() == 3 and grid-size == 8
-      or labels.len() == 4 and grid-size == 16,
+      labels.len() == 2 and cell-count == 4
+      or labels.len() == 3 and cell-count == 8
+      or labels.len() == 4 and cell-count == 16,
       message: "In alt-style you need to provide the matching amount of labels"
     )
   }
@@ -122,16 +131,16 @@
   let implicant-count = 0
 
   if manual-terms != none {
-    cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-str)))
+    cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-size)))
   } else if minterms != none {
-    cell-terms = (1, ) * grid-size
+    cell-terms = (1, ) * cell-count
     for minterm in minterms {
-      cell-terms.at(position-to-gray(minterm, grid-str)) = 0
+      cell-terms.at(position-to-gray(minterm, grid-size)) = 0
     }
   } else {
-    cell-terms = (0, ) * grid-size
+    cell-terms = (0, ) * cell-count
     for maxterm in maxterms {
-      cell-terms.at(position-to-gray(maxterm, grid-str)) = 1
+      cell-terms.at(position-to-gray(maxterm, grid-size)) = 1
     }
   }
 
@@ -143,7 +152,7 @@
   )
 
   let base = table(
-    columns: columns-dict.at(grid-str),
+    columns: columns-dict.at(grid-size),
     rows: cell-size,
     align: center + horizon,
     stroke: stroke-width,
@@ -159,8 +168,8 @@
     ..for (index, implicant) in implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
       let bottom-left-point
       let top-right-point
@@ -195,8 +204,8 @@
     ..for (index, implicant) in horizontal-implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
       let bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       let bottom-right-point = (calc.max(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
@@ -248,8 +257,8 @@
     ..for (index, implicant) in vertical-implicants.enumerate() {
       implicant-count += 1
 
-      let p1 = gray-to-coordinate(implicant.at(0), grid-str) 
-      let p2 = gray-to-coordinate(implicant.at(1), grid-str)
+      let p1 = gray-to-coordinate(implicant.at(0), grid-size) 
+      let p2 = gray-to-coordinate(implicant.at(1), grid-size)
 
       let bottom-left-point = (calc.min(p1.at(0), p2.at(0)), calc.min(p1.at(1), p2.at(1)))
       let top-left-point = (calc.min(p1.at(0), p2.at(0)), calc.max(p1.at(1), p2.at(1)))
@@ -315,11 +324,11 @@
 
       let corners
 
-      if grid-str == "2x2" {
+      if grid-size == "2x2" {
         corners = grid-size-2x2-corners
-      } else if grid-str == "2x4" {
+      } else if grid-size == "2x4" {
         corners = grid-size-2x4-corners
-      } else if grid-str == "4x2" {
+      } else if grid-size == "4x2" {
         corners = grid-size-4x2-corners
       } else {
         corners = grid-size-4x4-corners
@@ -384,9 +393,9 @@
 
     x-label1 = if labels == () { 
       x-label 
-    } else if grid-str == "2x2" or grid-str == "2x4" {
+    } else if grid-size == "2x2" or grid-size == "2x4" {
       labels.last()
-    } else if grid-str == "4x2" {
+    } else if grid-size == "4x2" {
       [#labels.at(1)#labels.at(2)]
     } else {
       [#labels.at(2)#labels.at(3)]
@@ -394,14 +403,14 @@
 
     y-label1 = if labels == () {
       y-label
-    } else if grid-str == "2x2" or grid-str == "4x2" {
+    } else if grid-size == "2x2" or grid-size == "4x2" {
       labels.first()
     } else {
       [#labels.at(0)#labels.at(1)]
     }
 
     let x-gray
-    if grid-str == "4x4" or grid-str == "4x2" {
+    if grid-size == "4x4" or grid-size == "4x2" {
       x-gray = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
@@ -420,7 +429,7 @@
     }
 
     let y-gray
-    if grid-str == "2x2" or grid-str == "4x2" {
+    if grid-size == "2x2" or grid-size == "4x2" {
       y-gray = table(
         columns: cell-size,
         rows: cell-size,
@@ -450,8 +459,8 @@
     )
   } else {
     let top-label
-    if grid-str == "4x4" or grid-str == "4x2" {
-      let i = if grid-str == "4x4" {2} else {1}
+    if grid-size == "4x4" or grid-size == "4x2" {
+      let i = if grid-size == "4x4" {2} else {1}
       top-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
@@ -461,7 +470,7 @@
         table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(i)$),
       )
     } else {
-      let i = if grid-str == "2x2" {1} else {2}
+      let i = if grid-size == "2x2" {1} else {2}
       top-label = table(
         columns: (cell-size,) * 2,
         rows: cell-size,
@@ -472,8 +481,8 @@
       )
     }
     let bottom-label
-    if grid-str == "4x4" or grid-str == "4x2" {
-      let i = if grid-str == "4x4" {3} else {2}
+    if grid-size == "4x4" or grid-size == "4x2" {
+      let i = if grid-size == "4x4" {3} else {2}
       bottom-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
@@ -487,7 +496,7 @@
       bottom-label = []
     }
     let left-label
-    if grid-str == "2x2" or grid-str == "4x2" {
+    if grid-size == "2x2" or grid-size == "4x2" {
       left-label = table(
         columns: cell-size,
         rows: cell-size,
@@ -507,7 +516,7 @@
       )
     }
     let right-label
-    if grid-str == "2x2" or grid-str == "4x2" {
+    if grid-size == "2x2" or grid-size == "4x2" {
       right-label = []
     } else {
       right-label = table(
