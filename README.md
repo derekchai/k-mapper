@@ -10,6 +10,7 @@ See the changelog for the package [here](https://github.com/derekchai/k-mapper/b
 
 - 2-variable (2 by 2) Karnaugh maps
 - 3-variable (2 by 4) Karnaugh maps
+- 3-variable (4 by 2) Karnaugh maps
 - 4-variable (4 by 4) Karnaugh maps
 
 ## Getting Started
@@ -24,9 +25,8 @@ Simply import `k-mapper` using the Typst package manager to begin using `k-mappe
 
 ```typst
   #karnaugh(
-    16,
-    x-label: $C D$,
-    y-label: $A B$,
+    "4x4",
+    labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       0, 1, 2, 3, 4, 5, 6, 7, 8, 
       9, 10, 11, 12, 13, 14, 15
