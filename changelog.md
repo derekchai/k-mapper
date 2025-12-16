@@ -3,7 +3,7 @@
 ## 1.4.0 (latest)
 - Added 4x2 Karnaugh maps
 
-## 1.3.0 (latest)
+## 1.3.0 
 - Added `style` parameter on `karnaugh()`
 - Deprecated `x-label` and `y-label` parameters on `karnaugh()`; use `labels` instead
     - Updated Manual to reflect this deprecation
