@@ -3,7 +3,7 @@
 
 #import "lib.typ": *
 
-#let version = "1.3.0"
+#let version = "1.4.0"
 
 #let conf(doc) = {
   set page(
@@ -38,14 +38,14 @@
   grid(
     columns: (1fr, 1fr),
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       manual-terms: (0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0),
       implicants: ((3, 6), (2, 10), (9, 11)),
     ),
     ```typst
     #karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       manual-terms: (
         0, 0, 1, 1, 0, 0, 1, 1, 
@@ -65,7 +65,7 @@
 #columns(2)[
   == introduction
 
-  k-mapper is a Typst package for adding customizable Karnaugh maps of 2~by~2, 2~by~4, and 4~by~4 grid sizes to your Typst projects.
+  k-mapper is a Typst package for adding customizable Karnaugh maps of 2~by~2, 2~by~4, 4~by~2, and 4~by~4 grid sizes to your Typst projects.
 
   See the source code on the Github repository for the project #link("https://github.com/derekchai/k-mapper/tree/main")[here], and the changelog #link("https://github.com/derekchai/k-mapper/blob/698e8554ce67e3a61dd30319ab8f712a6a6b8daa/changelog.md")[here].
 
@@ -86,15 +86,15 @@
       columns: (1fr, 1fr, 1fr),
       align: center + horizon,
       karnaugh(
-        4,
+        "2x2",
         manual-terms: (0, 1, 2, 3)
       ),
       karnaugh(
-        8,
+        "2x4",
         manual-terms: (0, 1, 2, 3, 4, 5, 6, 7)
       ),
       karnaugh(
-        16,
+        "4x4",
         manual-terms: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
         implicants: ((14, 14), ),
         colors: ((rgb(100, 100, 100, 100), ))
@@ -118,12 +118,14 @@
 
   table.header([*name*], [*default*], [*description*], [*example values*]),
 
-  [*`grid-size`*\ `int`], [required], [The size of the Karnaugh map's grid. This value can be only `4` (2~by~2), `8` (2~by~4), or `16` (4~by~4). Any other values will throw an error.], [```
-  4
+  [*`grid-size`*\ `(string | int)`], [required], [The size of the Karnaugh map's grid. This value can be `"2x2"`, `"2x4"`, `"4x2"`, or `"4x4"`. The values `4` (2~by~2), `8` (2~by~4), or `16` (4~by~4) are also allowed to ensure compatibility. Any other values will throw an error.], [```
+  "2x2"
 
-  8
+  "2x4"
 
-  16```],
+  "4x2"
+
+  "4x4```],
 
   [#strike(stroke: 1pt)[*`x-label`*]\ `content`], [```typst $$```], [(Deprecated; use `labels`) ] + strike[The label (usually a variable name) to go on the top (x-axis) of the Karnaugh map.], [```typst 
   $A$
@@ -159,10 +161,10 @@
 
   (7, )```],
 
-  [*`manual-terms`*\ `(content)`\ `none`], [```typst none```], [The `array` of `content` in each cell in order of Gray-code position@gcp. The length of this `array` _must_ equal the `grid-size`.
+  [*`manual-terms`*\ `(content)`\ `none`], [```typst none```], [The `array` of `content` in each cell in order of Gray-code position@gcp. The length of this `array` _must_ equal the amount of cells required by your `grid-size`.
 
   Mutually exclusive with `minterms` and `maxterms`.], [```typst 
-  // Grid-size 4
+  // Grid-size "2x2"
   (0, "X", 1, 1)
   ```],
 
@@ -173,15 +175,15 @@
 
   [*`horizontal
   -implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _horizontal split_ implicant --- that is, one which wraps around the vertical edges of the Karnaugh map.], [```typst 
-  // Grid-size 16
+  // Grid-size "4x4"
   ((0, 6), (8, 10))```],
 
   [*`vertical
   -implicants`*\ `((int, int), )`], [```typst ()```], [An `array` where each element is an `array` of two `int`s, where each `int` is a Gray code position@gcp corner of a _vertical split_ implicant --- that is, one which wraps around the horizontal edges of the Karnaugh map.], [```typst 
-  // Grid-size 8
+  // Grid-size "2x4"
   ((0, 4), )
   
-  // Grid-size 16
+  // Grid-size "4x4"
   ((0, 9), (2, 10))```],
 
   [*`corner
@@ -247,7 +249,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
   align: center,
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 0,
       manual-terms: (
@@ -262,7 +264,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
 
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 1,
       manual-terms: (
@@ -277,7 +279,7 @@ value can be `0`, `1`, or `2`. Courtesy of Aras14HD.
 
   figure(
     karnaugh(
-      16,
+      "4x4",
       labels: ($A$, $B$, $C$, $D$),
       style: 2,
       manual-terms: (
@@ -305,7 +307,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   gutter: 20pt,
 
   karnaugh(
-    4,
+    "2x2",
     manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), )
@@ -314,7 +316,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   // Grayscale Karnaugh map
   #karnaugh(
-    4,
+    "2x2",
     manual-terms: (0, 1, 1, 1),
     implicants: ((1, 3), (2, 3)),
     colors: (rgb(100, 100, 100, 100), ) // <-
@@ -322,7 +324,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
   
   karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
@@ -331,16 +333,34 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 0, 0, 0, "X", 1, 1),
     implicants: ((6, 7), ),
     vertical-implicants: ((1, 5), )
   ),
   ```],
+  
+  karnaugh(
+    "4x2",
+    labels: ($A$, $B$, $C$),
+    manual-terms: (0, 1, 0, 0, 0, 1, 0, 1),
+    implicants: ((3, 2), ),
+    horizontal-implicants:((0, 6),)
+  ),
+
+  [```typst
+  #karnaugh(
+    "4x2",
+    labels: ($A$, $B$, $C$),
+    manual-terms: (0, 1, 0, 0, 0, 1, 0, 1),
+    implicants: ((3, 2), ),
+    horizontal-implicants:((0, 6),)
+  ),
+  ```],
 
   karnaugh(
-    16,
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       1, 0, 1, 0, 0, 1, 0, 1, 
@@ -352,7 +372,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    16,
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       1, 0, 1, 0, 0, 1, 0, 1, 
@@ -364,14 +384,14 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    8,
+    "2x4",
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)),
   ),
 
   [```typst
   #karnaugh(
-    8,
+    "2x4",
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: (
       (0, 0), (1, 1), (2, 2), (3, 3), 
@@ -381,7 +401,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    16,
+    "4x4",
     x-label: $C D$,
     y-label: $A B$,
     labels: ($A$, $B$, $C$, $D$),
@@ -394,7 +414,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
 
   [```typst
   #karnaugh(
-    16,
+    "4x4",
     labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       0, 1, 2, 3, 4, 5, 6, 7, 8, 
@@ -408,7 +428,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   ```],
 
   karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),
@@ -420,7 +440,7 @@ Thank you to Moch. Nafkhan Alzamzami (`nafkhanzam`) on GitHub for pointing out t
   [```typst
   // No fill Karnaugh map
   #karnaugh(
-    8,
+    "2x4",
     labels: ($A$, $B$, $C$),
     manual-terms: (0, 1, 2, 3, 4, 5, 6, 7),
     implicants: ((0, 3), (2, 7)),

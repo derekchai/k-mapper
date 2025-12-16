@@ -1,4 +1,4 @@
-# `k-mapper` for Typst (1.3.0)
+# `k-mapper` for Typst (1.4.0)
 
 📖 See the `k-mapper` Manual [here](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf)! The Manual features much more documentation, and is typeset using Typst.
 
@@ -10,6 +10,7 @@ See the changelog for the package [here](https://github.com/derekchai/k-mapper/b
 
 - 2-variable (2 by 2) Karnaugh maps
 - 3-variable (2 by 4) Karnaugh maps
+- 3-variable (4 by 2) Karnaugh maps
 - 4-variable (4 by 4) Karnaugh maps
 
 ## Getting Started
@@ -17,16 +18,15 @@ See the changelog for the package [here](https://github.com/derekchai/k-mapper/b
 Simply import `k-mapper` using the Typst package manager to begin using `k-mapper` within your Typst documents.
 
 ```typst
-#import "@preview/k-mapper:1.3.0": *
+#import "@preview/k-mapper:1.4.0": *
 ```
 
 ## Example
 
 ```typst
   #karnaugh(
-    16,
-    x-label: $C D$,
-    y-label: $A B$,
+    "4x4",
+    labels: ($A$, $B$, $C$, $D$),
     manual-terms: (
       0, 1, 2, 3, 4, 5, 6, 7, 8, 
       9, 10, 11, 12, 13, 14, 15

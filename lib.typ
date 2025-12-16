@@ -81,6 +81,26 @@
   // Stroke width of implicants.
   implicant-stroke-width: 0.5pt
 ) = {
+
+  if grid-size == 4 {
+    grid-size = "2x2"
+  } else if grid-size == 8 {
+    grid-size = "2x4"
+  } else if grid-size == 16 {
+    grid-size = "4x4"
+  }
+
+  let cell-count
+  if grid-size == "2x2" {
+    cell-count = 4
+  } else if grid-size == "2x4" {
+    cell-count = 8
+  } else if grid-size == "4x2" {
+    cell-count = 8
+  } else if grid-size == "4x4" {
+    cell-count = 16
+  }
+
   assert(
     minterms != none and maxterms == none and manual-terms == none
     or minterms == none and maxterms != none and manual-terms == none
@@ -89,7 +109,7 @@
   )
 
   if manual-terms != none {
-    assert(manual-terms.len() == grid-size,
+    assert(manual-terms.len() == cell-count,
     message: "Please provide exactly the correct number of terms for the" +
     "respective grid size!")
   }
@@ -98,9 +118,9 @@
     message: "Unsupported Style, must be one of 0, 1, 2")
   if style != 0 {
     assert(
-      labels.len() == 2 and grid-size == 4
-      or labels.len() == 3 and grid-size == 8
-      or labels.len() == 4 and grid-size == 16,
+      labels.len() == 2 and cell-count == 4
+      or labels.len() == 3 and cell-count == 8
+      or labels.len() == 4 and cell-count == 16,
       message: "In alt-style you need to provide the matching amount of labels"
     )
   }
@@ -113,25 +133,26 @@
   if manual-terms != none {
     cell-terms = manual-terms.enumerate().map(x => manual-terms.at(position-to-gray(x.at(0), grid-size)))
   } else if minterms != none {
-    cell-terms = (1, ) * grid-size
+    cell-terms = (1, ) * cell-count
     for minterm in minterms {
       cell-terms.at(position-to-gray(minterm, grid-size)) = 0
     }
   } else {
-    cell-terms = (0, ) * grid-size
+    cell-terms = (0, ) * cell-count
     for maxterm in maxterms {
       cell-terms.at(position-to-gray(maxterm, grid-size)) = 1
     }
   }
 
   let columns-dict = (
-    "4": (cell-size, cell-size),
-    "8": (cell-size, cell-size),
-    "16": (cell-size, cell-size, cell-size, cell-size),
+    "2x2": (cell-size, cell-size),
+    "2x4": (cell-size, cell-size),
+    "4x2": (cell-size, cell-size, cell-size, cell-size),
+    "4x4": (cell-size, cell-size, cell-size, cell-size),
   )
 
   let base = table(
-    columns: columns-dict.at(str(grid-size)),
+    columns: columns-dict.at(grid-size),
     rows: cell-size,
     align: center + horizon,
     stroke: stroke-width,
@@ -296,18 +317,21 @@
       //
       // For example, at index 3, in a 4x4 K-map, the Gray code at that corner
       // is 10.
-      let grid-size-4-corners = (0, 1, 2, 3).map(x => gray-to-coordinate(x, 4))
-      let grid-size-8-corners = (0, 1, 4, 5).map(x => gray-to-coordinate(x, 8))
-      let grid-size-16-corners = (0, 2, 8, 10).map(x => gray-to-coordinate(x, 16))
+      let grid-size-2x2-corners = (0, 1, 2, 3).map(x => gray-to-coordinate(x, "2x2"))
+      let grid-size-2x4-corners = (0, 1, 4, 5).map(x => gray-to-coordinate(x, "2x4"))
+      let grid-size-4x2-corners = (0, 2, 4, 6).map(x => gray-to-coordinate(x, "4x2"))
+      let grid-size-4x4-corners = (0, 2, 8, 10).map(x => gray-to-coordinate(x, "4x4"))
 
       let corners
 
-      if grid-size == 4 {
-        corners = grid-size-4-corners
-      } else if grid-size == 8 {
-        corners = grid-size-8-corners
+      if grid-size == "2x2" {
+        corners = grid-size-2x2-corners
+      } else if grid-size == "2x4" {
+        corners = grid-size-2x4-corners
+      } else if grid-size == "4x2" {
+        corners = grid-size-4x2-corners
       } else {
-        corners = grid-size-16-corners
+        corners = grid-size-4x4-corners
       }
 
       let dx-left = -edge-implicant-overflow + implicant-inset
@@ -369,22 +393,24 @@
 
     x-label1 = if labels == () { 
       x-label 
-    } else if grid-size == 4 or grid-size == 8 {
+    } else if grid-size == "2x2" or grid-size == "2x4" {
       labels.last()
+    } else if grid-size == "4x2" {
+      [#labels.at(1)#labels.at(2)]
     } else {
       [#labels.at(2)#labels.at(3)]
     }
 
     y-label1 = if labels == () {
       y-label
-    } else if grid-size == 4 {
+    } else if grid-size == "2x2" or grid-size == "4x2" {
       labels.first()
     } else {
       [#labels.at(0)#labels.at(1)]
     }
 
     let x-gray
-    if grid-size == 16 {
+    if grid-size == "4x4" or grid-size == "4x2" {
       x-gray = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
@@ -403,7 +429,7 @@
     }
 
     let y-gray
-    if grid-size == 4 {
+    if grid-size == "2x2" or grid-size == "4x2" {
       y-gray = table(
         columns: cell-size,
         rows: cell-size,
@@ -433,17 +459,18 @@
     )
   } else {
     let top-label
-    if grid-size == 16 {
+    if grid-size == "4x4" or grid-size == "4x2" {
+      let i = if grid-size == "4x4" {2} else {1}
       top-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
         align: center + bottom,
         stroke: none,
-        table.cell(colspan: 2, if style == 2 {[]} else {$overline(#labels.at(2))$}),
-        table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(2)$),
+        table.cell(colspan: 2, if style == 2 {[]} else {$overline(#labels.at(i))$}),
+        table.cell(colspan: 2, stroke: if style == 2 {(bottom: black + 2pt)} else {none}, $#labels.at(i)$),
       )
     } else {
-      let i = if grid-size == 4 {1} else {2}
+      let i = if grid-size == "2x2" {1} else {2}
       top-label = table(
         columns: (cell-size,) * 2,
         rows: cell-size,
@@ -454,21 +481,22 @@
       )
     }
     let bottom-label
-    if grid-size == 16 {
+    if grid-size == "4x4" or grid-size == "4x2" {
+      let i = if grid-size == "4x4" {3} else {2}
       bottom-label = table(
         columns: (cell-size,) * 4,
         rows: cell-size,
         align: center + top,
         stroke: none,
-        if style == 2 {[]} else {$overline(#labels.at(3))$},
-        table.cell(colspan: 2, stroke: if style == 2 {(top: black + 2pt)} else {none}, $#labels.at(3)$),
-        if style == 2 {[]} else {$overline(#labels.at(3))$}
+        if style == 2 {[]} else {$overline(#labels.at(i))$},
+        table.cell(colspan: 2, stroke: if style == 2 {(top: black + 2pt)} else {none}, $#labels.at(i)$),
+        if style == 2 {[]} else {$overline(#labels.at(i))$}
       )
     } else {
       bottom-label = []
     }
     let left-label
-    if grid-size == 4 {
+    if grid-size == "2x2" or grid-size == "4x2" {
       left-label = table(
         columns: cell-size,
         rows: cell-size,
@@ -488,7 +516,7 @@
       )
     }
     let right-label
-    if grid-size == 4 {
+    if grid-size == "2x2" or grid-size == "4x2" {
       right-label = []
     } else {
       right-label = table(
