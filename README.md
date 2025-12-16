@@ -1,4 +1,4 @@
-# `k-mapper` for Typst (1.3.0)
+# `k-mapper` for Typst (1.4.0)
 
 📖 See the `k-mapper` Manual [here](https://github.com/derekchai/k-mapper/blob/1f334d9e0f02cc656c01835302474bf728db9f80/manual.pdf)! The Manual features much more documentation, and is typeset using Typst.
 
@@ -18,7 +18,7 @@ See the changelog for the package [here](https://github.com/derekchai/k-mapper/b
 Simply import `k-mapper` using the Typst package manager to begin using `k-mapper` within your Typst documents.
 
 ```typst
-#import "@preview/k-mapper:1.3.0": *
+#import "@preview/k-mapper:1.4.0": *
 ```
 
 ## Example
